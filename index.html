@@ -1,370 +1,443 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>NEXUS — A Anomalia</title>
-<style>
-/* ═══════════ RESET ═══════════ */
-*{margin:0;padding:0;box-sizing:border-box;image-rendering:pixelated}
-html,body{width:100%;height:100%;overflow:hidden;background:#050809;font-family:'Courier New',monospace;font-size:14px;color:#7abf84;user-select:none}
-button{font-family:inherit;cursor:pointer;user-select:none}
-input{font-family:inherit}
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>NEXUS — A Anomalia</title>
+    <style>
+      /* ═══════════ RESET ═══════════ */
+      *{margin:0;padding:0;box-sizing:border-box;image-rendering:pixelated}
+      html,body{width:100%;height:100%;overflow:hidden;background:#050809;font-family:'Courier New',monospace;font-size:18px;color:#7abf84;user-select:none}
+      button{font-family:inherit;cursor:pointer;user-select:none}
+      input{font-family:inherit}
 
-/* ═══════════ CRT FX ═══════════ */
-#crt{position:fixed;inset:0;z-index:9999;pointer-events:none}
-#crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0,rgba(0,0,0,.14) 1px,transparent 1px,transparent 3px)}
-#crt::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 88% at 50% 50%,transparent 52%,rgba(0,0,0,.72) 100%)}
-#flashEl{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0;transition:opacity .05s}
+      /* ═══════════ CRT FX ═══════════ */
+      #crt{position:fixed;inset:0;z-index:9999;pointer-events:none}
+      #crt::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0,rgba(0,0,0,.14) 1px,transparent 1px,transparent 3px)}
+      #crt::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 88% at 50% 50%,transparent 52%,rgba(0,0,0,.72) 100%)}
+      #flashEl{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0;transition:opacity .05s}
 
-/* ═══════════ SCREENS ═══════════ */
-.scr{position:absolute;inset:0;display:none}
-.scr.on{display:flex}
+      /* ═══════════ SCREENS ═══════════ */
+      .scr{position:absolute;inset:0;display:none}
+      .scr.on{display:flex}
 
-/* ═══════════ TITLE ═══════════ */
-#sTitle{flex-direction:column;align-items:center;justify-content:center;background:#050809;
-  background-image:linear-gradient(rgba(40,100,50,.03)1px,transparent 1px),linear-gradient(90deg,rgba(40,100,50,.03)1px,transparent 1px);background-size:8px 8px}
-#titleArt{margin-bottom:1rem}
-.t-corp{font-size:.48rem;letter-spacing:.5em;color:#3a6a44;text-align:center;margin-bottom:.6rem}
-.t-logo{font-size:clamp(1.4rem,4.5vw,2.8rem);color:#62a870;text-align:center;line-height:1.1;letter-spacing:.05em;text-shadow:2px 0 #2a5c38,-1px 0 rgba(200,0,0,.25)}
-.t-sub{font-size:.46rem;letter-spacing:.4em;color:#3a6a44;margin:.2rem 0 1.1rem;text-align:center}
-.t-div{width:170px;height:2px;margin:0 auto 1.1rem;background:repeating-linear-gradient(90deg,#2a5c38 0,#2a5c38 4px,transparent 4px,transparent 8px)}
-.t-lbl{font-size:.46rem;color:#3a6a44;letter-spacing:.18em;margin-bottom:.28rem;text-align:center}
-.t-inp{background:#09130e;border:1px solid #2a5c38;color:#62a870;font-family:'Courier New',monospace;font-size:.82rem;padding:.42rem .8rem;width:210px;outline:none;text-align:center;letter-spacing:.08em;display:block;margin:0 auto;box-shadow:2px 2px 0 #000,inset 0 0 8px rgba(0,30,0,.5)}
-.t-inp::placeholder{color:#1e4028}
-.grad{display:flex;align-items:center;gap:.22rem;cursor:pointer;font-size:.55rem;color:#3a6a44}
-.grad input{accent-color:#3a9a50;width:11px;height:11px}
-.grad:hover{color:#7abf84}
-.t-warn{font-size:.42rem;color:#3a6a44;letter-spacing:.06em;margin-top:.9rem;text-align:center;max-width:330px;opacity:.5;line-height:1.7}
+      /* ═══════════ TITLE ═══════════ */
+      #sTitle{flex-direction:column;align-items:center;justify-content:center;background:#050809;
+        background-image:linear-gradient(rgba(40,100,50,.03)1px,transparent 1px),linear-gradient(90deg,rgba(40,100,50,.03)1px,transparent 1px);background-size:8px 8px}
+      #titleArt{margin-bottom:1rem}
+      .t-corp{font-size:.64rem;letter-spacing:.5em;color:#3a6a44;text-align:center;margin-bottom:.6rem}
+      .t-logo{font-size:clamp(1.8rem,5vw,3.4rem);color:#62a870;text-align:center;line-height:1.1;letter-spacing:.05em;text-shadow:2px 0 #2a5c38,-1px 0 rgba(200,0,0,.25)}
+      .t-sub{font-size:.62rem;letter-spacing:.4em;color:#3a6a44;margin:.2rem 0 1.1rem;text-align:center}
+      .t-div{width:170px;height:2px;margin:0 auto 1.1rem;background:repeating-linear-gradient(90deg,#2a5c38 0,#2a5c38 4px,transparent 4px,transparent 8px)}
+      .t-lbl{font-size:.62rem;color:#3a6a44;letter-spacing:.18em;margin-bottom:.28rem;text-align:center}
+      .t-inp{background:#09130e;border:1px solid #2a5c38;color:#62a870;font-family:'Courier New',monospace;font-size:1.1rem;padding:.42rem .8rem;width:210px;outline:none;text-align:center;letter-spacing:.08em;display:block;margin:0 auto;box-shadow:2px 2px 0 #000,inset 0 0 8px rgba(0,30,0,.5)}
+      .t-inp::placeholder{color:#1e4028}
+      .grad{display:flex;align-items:center;gap:.22rem;cursor:pointer;font-size:.72rem;color:#3a6a44}
+      .grad input{accent-color:#3a9a50;width:11px;height:11px}
+      .grad:hover{color:#7abf84}
+      .t-warn{font-size:.56rem;color:#3a6a44;letter-spacing:.06em;margin-top:.9rem;text-align:center;max-width:330px;opacity:.5;line-height:1.7}
 
-/* ═══════════ PIXEL BUTTON ═══════════ */
-.pb{background:#09130e;border:1px solid #2a5c38;color:#62a870;box-shadow:2px 2px 0 #000;padding:.48rem 1.5rem;font-size:.6rem;letter-spacing:.1em;display:block;margin:.4rem auto 0;transition:none}
-.pb:hover{background:#0f1e14;border-color:#3a7a48;color:#8ad094}
-.pb:active{transform:translate(1px,1px);box-shadow:none}
-.pb.sm{font-size:.52rem;padding:.32rem .9rem}
-.pb.r{border-color:#6a1515;color:#cc2a2a}.pb.r:hover{background:#1a0606}
-.pb.y{border-color:#5a4010;color:#c89040}.pb.y:hover{background:#1a1006}
-.pb.g{border-color:#2a6a38;color:#5ab870;background:#0c1a10}.pb.g:hover{background:#0f2014}
+      /* ═══════════ PIXEL BUTTON ═══════════ */
+      .pb{background:#09130e;border:1px solid #2a5c38;color:#62a870;box-shadow:2px 2px 0 #000;padding:.48rem 1.5rem;font-size:.8rem;letter-spacing:.1em;display:block;margin:.4rem auto 0;transition:none}
+      .pb:hover{background:#0f1e14;border-color:#3a7a48;color:#8ad094}
+      .pb:active{transform:translate(1px,1px);box-shadow:none}
+      .pb.sm{font-size:.72rem;padding:.32rem .9rem}
+      .pb.r{border-color:#6a1515;color:#cc2a2a}.pb.r:hover{background:#1a0606}
+      .pb.y{border-color:#5a4010;color:#c89040}.pb.y:hover{background:#1a1006}
+      .pb.g{border-color:#2a6a38;color:#5ab870;background:#0c1a10}.pb.g:hover{background:#0f2014}
 
-/* ═══════════ GAME LAYOUT ═══════════ */
-#sGame{flex-direction:column;background:#050809;cursor:pointer}
+      /* ═══════════ GAME LAYOUT ═══════════ */
+      #sGame{flex-direction:column;background:#050809;cursor:pointer}
 
-/* Scene top area */
-#sceneArea{flex:1;position:relative;overflow:hidden;min-height:0}
-#sceneCV{position:absolute;inset:0;width:100%;height:100%}
-#sceneLbl{position:absolute;top:.35rem;left:.5rem;font-size:.46rem;color:rgba(100,180,110,.45);letter-spacing:.14em;pointer-events:none}
-#camTm{position:absolute;top:.35rem;right:.5rem;font-size:.5rem;color:rgba(100,180,110,.38);pointer-events:none}
-/* item card overlay on scene (contextual) */
-#itemCard{position:absolute;bottom:.5rem;left:.5rem;background:rgba(5,15,8,.92);border:1px solid #2a5c38;padding:.5rem .7rem;max-width:200px;display:none;pointer-events:none;font-size:.52rem;line-height:1.6;color:#7abf84;z-index:10}
-#itemCard .ic-title{color:#c89040;font-size:.5rem;letter-spacing:.12em;margin-bottom:.25rem}
+      /* Scene top area */
+      #sceneArea{flex:1;position:relative;overflow:hidden;min-height:0}
+      #sceneCV{position:absolute;inset:0;width:100%;height:100%}
+      #sceneLbl{position:absolute;top:.35rem;left:.5rem;font-size:.46rem;color:rgba(100,180,110,.45);letter-spacing:.14em;pointer-events:none}
+      #camTm{position:absolute;top:.35rem;right:.5rem;font-size:.5rem;color:rgba(100,180,110,.38);pointer-events:none}
+      /* item card overlay on scene (contextual) */
+      #itemCard{position:absolute;bottom:.5rem;left:.5rem;background:rgba(5,15,8,.92);border:1px solid #2a5c38;padding:.5rem .7rem;max-width:200px;display:none;pointer-events:none;font-size:.52rem;line-height:1.6;color:#7abf84;z-index:10}
+      #itemCard .ic-title{color:#c89040;font-size:.5rem;letter-spacing:.12em;margin-bottom:.25rem}
 
-/* UI bottom */
-#uiBot{background:#070e0a;border-top:2px solid #1a3a22;flex-shrink:0;display:flex;flex-direction:column}
-#dialRow{display:flex;border-bottom:1px solid #111e14;min-height:0}
-#portWrap{width:clamp(68px,11vw,96px);flex-shrink:0;background:#06100a;border-right:1px solid #111e14;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
-#portCV{display:block}
-#spkName{font-size:.42rem;color:#3a6a44;letter-spacing:.1em;text-align:center;padding:.12rem .15rem;border-top:1px solid #111e14;width:100%;background:#09130e}
-#txtArea{flex:1;padding:.45rem .65rem;min-width:0;overflow:hidden}
-#dialTxt{font-size:clamp(.58rem,.85vw+.25rem,.72rem);line-height:1.8;color:#c8dcc8;min-height:2.2rem}
-#dialTxt.glitch{animation:tg .28s steps(2) infinite}
-@keyframes tg{0%{transform:none;color:#c8dcc8}33%{transform:skewX(3deg) translateX(-2px);color:#7abf84;filter:hue-rotate(40deg)}66%{transform:skewX(-2deg) translateX(1px);color:#cc2a2a}100%{transform:none;color:#c8dcc8}}
-#advHint{font-size:.42rem;color:#2a5c38;text-align:right;margin-top:.25rem}
-#advHint.blink{animation:bl .75s steps(1) infinite}
-@keyframes bl{50%{opacity:0}}
+      /* UI bottom */
+      #uiBot{background:#070e0a;border-top:2px solid #1a3a22;flex-shrink:0;display:flex;flex-direction:column}
+      #dialRow{display:flex;border-bottom:1px solid #111e14;min-height:0}
+      #portWrap{width:clamp(68px,11vw,96px);flex-shrink:0;background:#06100a;border-right:1px solid #111e14;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+      #portCV{display:block}
+      #spkName{font-size:.56rem;color:#3a6a44;letter-spacing:.1em;text-align:center;padding:.12rem .15rem;border-top:1px solid #111e14;width:100%;background:#09130e}
+      #txtArea{flex:1;padding:.45rem .65rem;min-width:0;overflow:hidden}
+      #dialTxt{font-size:clamp(.8rem,1vw+.35rem,1rem);line-height:1.8;color:#c8dcc8;min-height:2.2rem}
+      #dialTxt.glitch{animation:tg .28s steps(2) infinite}
+      @keyframes tg{0%{transform:none;color:#c8dcc8}33%{transform:skewX(3deg) translateX(-2px);color:#7abf84;filter:hue-rotate(40deg)}66%{transform:skewX(-2deg) translateX(1px);color:#cc2a2a}100%{transform:none;color:#c8dcc8}}
+      #advHint{font-size:.56rem;color:#2a5c38;text-align:right;margin-top:.25rem}
+      #advHint.blink{animation:bl .75s steps(1) infinite}
+      @keyframes bl{50%{opacity:0}}
 
-/* choices */
-#choicesDiv{padding:.35rem .55rem;display:none;flex-direction:column;gap:.22rem;background:#06100a;border-bottom:1px solid #111e14}
-.ch{background:#09130e;border:1px solid #1a3a22;color:#7abf84;padding:.32rem .65rem;text-align:left;font-family:'Courier New',monospace;font-size:clamp(.52rem,.65vw+.18rem,.65rem);letter-spacing:.04em;box-shadow:1px 1px 0 #000;line-height:1.4}
-.ch::before{content:'▶ ';color:#2a5c38;font-size:.5rem}
-.ch:hover{background:#0f1e14;border-color:#2a6a38;color:#8ad094}
-.ch:hover::before{color:#5ab870}
-.ch:active{transform:translate(1px,1px);box-shadow:none}
-/* back button always visible */
-#backBtn{display:none;background:#06100a;border:none;border-top:1px solid #0d1e12;color:#2a5c38;font-size:.46rem;letter-spacing:.1em;padding:.22rem;text-align:left;cursor:pointer}
-#backBtn:hover{color:#4a8a54;background:#09130e}
-#backBtn::before{content:'← '}
+      /* choices */
+      #choicesDiv{padding:.35rem .55rem;display:none;flex-direction:column;gap:.22rem;background:#06100a;border-bottom:1px solid #111e14}
+      .ch{background:#09130e;border:1px solid #1a3a22;color:#7abf84;padding:.32rem .65rem;text-align:left;font-family:'Courier New',monospace;font-size:clamp(.72rem,.8vw+.25rem,.88rem);letter-spacing:.04em;box-shadow:1px 1px 0 #000;line-height:1.4}
+      .ch::before{content:'> ';color:#2a5c38;font-size:.68rem}
+      .ch:hover{background:#0f1e14;border-color:#2a6a38;color:#8ad094}
+      .ch:hover::before{color:#5ab870}
+      .ch:active{transform:translate(1px,1px);box-shadow:none}
+      /* back button always visible */
+      #backBtn{display:none;background:#06100a;border:none;border-top:1px solid #0d1e12;color:#2a5c38;font-size:.62rem;letter-spacing:.1em;padding:.22rem;text-align:left;cursor:pointer}
+      #backBtn:hover{color:#4a8a54;background:#09130e}
+      #backBtn::before{content:'<- '}
 
-/* HUD */
-#hudBar{display:flex;align-items:center;gap:.45rem;padding:.2rem .6rem;background:#050809;border-top:1px solid #0d1e12;flex-wrap:wrap}
-.hc{font-size:.44rem;letter-spacing:.09em;color:#3a6a44;white-space:nowrap}
-.hc b{color:#7abf84}
-.hb{display:inline-flex;width:46px;height:4px;background:#09130e;border:1px solid #111e14;vertical-align:middle;margin-left:2px;overflow:hidden}
-.hbf{height:100%;transition:width .3s}
-.hsep{width:1px;height:12px;background:#111e14}
-.hbtn{font-family:'Courier New',monospace;font-size:.42rem;letter-spacing:.07em;background:#09130e;border:1px solid #1a3a22;color:#3a6a44;padding:.15rem .45rem;cursor:pointer;box-shadow:1px 1px 0 #000}
-.hbtn:hover{border-color:#2a5c38;color:#7abf84}
-#hudBar .sp{flex:1}
+      /* HUD */
+      #hudBar{display:flex;align-items:center;gap:.45rem;padding:.2rem .6rem;background:#050809;border-top:1px solid #0d1e12;flex-wrap:wrap}
+      .hc{font-size:.58rem;letter-spacing:.09em;color:#3a6a44;white-space:nowrap}
+      .hc b{color:#7abf84}
+      .hb{display:inline-flex;width:46px;height:4px;background:#09130e;border:1px solid #111e14;vertical-align:middle;margin-left:2px;overflow:hidden}
+      .hbf{height:100%;transition:width .3s}
+      .hsep{width:1px;height:12px;background:#111e14}
+      .hbtn{font-family:'Courier New',monospace;font-size:.56rem;letter-spacing:.07em;background:#09130e;border:1px solid #1a3a22;color:#3a6a44;padding:.15rem .45rem;cursor:pointer;box-shadow:1px 1px 0 #000}
+      .hbtn:hover{border-color:#2a5c38;color:#7abf84}
+      #hudBar .sp{flex:1}
 
-/* ═══════════ NOTIFICATION ═══════════ */
-#notifBox{position:fixed;top:45px;right:8px;z-index:5000;display:flex;flex-direction:column;gap:4px;pointer-events:none;max-width:240px}
-.notif{background:#09130e;border:1px solid #2a5c38;padding:.32rem .6rem;font-size:.5rem;color:#7abf84;letter-spacing:.07em;box-shadow:2px 2px 0 #000;line-height:1.5;animation:nin .2s ease-out}
-@keyframes nin{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
-.notif.item{border-color:#c89040;color:#c89040}
-.notif.lore{border-color:#4a8a54}
+      /* ═══════════ NOTIFICATION ═══════════ */
+      #notifBox{position:fixed;top:45px;right:8px;z-index:5000;display:flex;flex-direction:column;gap:4px;pointer-events:none;max-width:240px}
+      .notif{background:#09130e;border:1px solid #2a5c38;padding:.32rem .6rem;font-size:.68rem;color:#7abf84;letter-spacing:.07em;box-shadow:2px 2px 0 #000;line-height:1.5;animation:nin .2s ease-out}
+      @keyframes nin{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+      .notif.item{border-color:#c89040;color:#c89040}
+      .notif.lore{border-color:#4a8a54}
 
-/* ═══════════ INVENTORY ═══════════ */
-#invOv{position:fixed;inset:0;z-index:4000;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center}
-#invOv.on{display:flex}
-#invBox{background:#09130e;border:1px solid #2a5c38;box-shadow:3px 3px 0 #000;width:min(680px,96vw);max-height:88vh;display:flex;flex-direction:column}
-.inv-hd{background:#0d1a12;border-bottom:1px solid #1a3a22;padding:.35rem .7rem;display:flex;align-items:center;justify-content:space-between}
-.inv-ht{font-size:.7rem;color:#62a870;letter-spacing:.16em}
-.inv-tabs{display:flex;border-bottom:1px solid #111e14}
-.itab{font-size:.48rem;padding:.28rem .65rem;cursor:pointer;color:#3a6a44;border-right:1px solid #111e14;letter-spacing:.07em}
-.itab.on{background:#0f1e14;color:#7abf84}
-.itab:hover{color:#7abf84}
-.inv-body{display:flex;flex:1;overflow:hidden;min-height:260px}
-.inv-list{width:190px;border-right:1px solid #111e14;overflow-y:auto;flex-shrink:0;scrollbar-width:thin;scrollbar-color:#1a3a22 #09130e}
-.ii{padding:.35rem .65rem;font-size:.56rem;cursor:pointer;border-bottom:1px solid #0d1a12;color:#3a6a44;letter-spacing:.04em;line-height:1.3}
-.ii:hover,.ii.sel{background:#0f1e14;color:#7abf84}
-.ii .cat{font-size:.4rem;color:#2a5c38;display:block;margin-top:.08rem}
-.inv-det{flex:1;padding:.7rem .85rem;overflow-y:auto;display:flex;flex-direction:column;gap:.4rem}
-.inv-dt{font-size:.62rem;color:#62a870;letter-spacing:.1em}
-.inv-db{font-size:.58rem;line-height:1.75;white-space:pre-wrap;color:#c8dcc8}
-.inv-use{display:none}
-.inv-empty{font-size:.56rem;color:#2a5c38;padding:.9rem}
+      /* ═══════════ INVENTORY ═══════════ */
+      #invOv,#saveOv,#resumeOv,#loadOv{position:fixed;inset:0;z-index:4000;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center}
+      #invOv.on,#saveOv.on,#resumeOv.on,#loadOv.on{display:flex}
+      #saveBox,#resumeBox,#loadBox{background:#09130e;border:1px solid #2a5c38;box-shadow:3px 3px 0 #000;width:min(680px,96vw);max-height:88vh;display:flex;flex-direction:column}
+      #itemCardGame{position:fixed;top:.5rem;right:.5rem;z-index:3500;background:#09130e;border:1px solid #2a5c38;padding:.5rem .7rem;font-size:.6rem;max-width:200px;display:none}
+      #itemCardGame.on{display:block}
+      #invBox{background:#09130e;border:1px solid #2a5c38;box-shadow:3px 3px 0 #000;width:min(680px,96vw);max-height:88vh;display:flex;flex-direction:column}
+      .inv-hd{background:#0d1a12;border-bottom:1px solid #1a3a22;padding:.35rem .7rem;display:flex;align-items:center;justify-content:space-between}
+      .inv-ht{font-size:.88rem;color:#62a870;letter-spacing:.16em}
+      .inv-tabs{display:flex;border-bottom:1px solid #111e14}
+      .itab{font-size:.64rem;padding:.28rem .65rem;cursor:pointer;color:#3a6a44;border-right:1px solid #111e14;letter-spacing:.07em}
+      .itab.on{background:#0f1e14;color:#7abf84}
+      .itab:hover{color:#7abf84}
+      .inv-body{display:flex;flex:1;overflow:hidden;min-height:260px}
+      .inv-list{width:190px;border-right:1px solid #111e14;overflow-y:auto;flex-shrink:0;scrollbar-width:thin;scrollbar-color:#1a3a22 #09130e}
+      .ii{padding:.35rem .65rem;font-size:.72rem;cursor:pointer;border-bottom:1px solid #0d1a12;color:#3a6a44;letter-spacing:.04em;line-height:1.3}
+      .ii:hover,.ii.sel{background:#0f1e14;color:#7abf84}
+      .ii .cat{font-size:.56rem;color:#2a5c38;display:block;margin-top:.08rem}
+      .inv-det{flex:1;padding:.7rem .85rem;overflow-y:auto;display:flex;flex-direction:column;gap:.4rem}
+      .inv-dt{font-size:.8rem;color:#62a870;letter-spacing:.1em}
+      .inv-db{font-size:.76rem;line-height:1.75;white-space:pre-wrap;color:#c8dcc8}
+      .inv-use{display:none}
+      .inv-empty{font-size:.72rem;color:#2a5c38;padding:.9rem}
 
-/* ═══════════ MINIGAME OVERLAY ═══════════ */
-#mgOv{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;flex-direction:column}
-#mgOv.on{display:flex}
-#mgBox{background:#09130e;border:1px solid #2a5c38;box-shadow:3px 3px 0 #000;max-width:min(680px,96vw);width:100%;display:flex;flex-direction:column;max-height:94vh;overflow-y:auto}
-.mg-hd{background:#0d1a12;border-bottom:1px solid #1a3a22;padding:.35rem .7rem;display:flex;align-items:center;justify-content:space-between}
-.mg-ht{font-size:.68rem;color:#62a870;letter-spacing:.16em}
-.mg-esc{font-size:.46rem;color:#3a6a44;cursor:pointer;padding:.18rem .45rem;border:1px solid #1a3a22}
-.mg-esc:hover{color:#7abf84}
-.mg-bd{padding:.7rem;display:flex;flex-direction:column;align-items:center;gap:.55rem}
-.mg-inst{font-size:.56rem;color:#3a6a44;text-align:center;max-width:480px;line-height:1.7}
-.mg-st{font-size:.58rem;color:#3a6a44;min-height:.9rem;text-align:center}
-.mg-st b{color:#7abf84}
-.mg-res{display:none;flex-direction:column;align-items:center;gap:.45rem;text-align:center}
-.mg-res.on{display:flex}
-.mg-rl{font-size:.95rem;letter-spacing:.18em}
-.mg-rl.win{color:#62a870}
-.mg-rl.lose{color:#cc2a2a}
-.mg-rm{font-size:.56rem;color:#3a6a44;max-width:340px;line-height:1.7}
+      /* ═══════════ SAVE SLOTS ═══════════ */
+      #saveOv,#resumeOv{z-index:4100}
+      #saveBox,#resumeBox{background:#09130e;border:1px solid #2a5c38;box-shadow:3px 3px 0 #000;width:min(680px,96vw);max-height:88vh;display:flex;flex-direction:column}
+      .slotCard{background:#0d1a12;border:1px solid #1a3a22;padding:.6rem .8rem;margin-bottom:.5rem;cursor:pointer;transition:all .2s}
+      .slotCard:hover{border-color:#2a5c38;background:#0f1e14}
+      #slotsContainer,#resumeContainer{flex:1;overflow-y:auto;padding:.7rem;display:flex;flex-direction:column;gap:.4rem;scrollbar-width:thin;scrollbar-color:#1a3a22 #09130e}
 
-/* wire */
-.wa{background:#06100a;border:1px solid #111e14;padding:.6rem;width:min(480px,90vw)}
-.wr{display:flex;align-items:center;gap:.45rem;margin-bottom:.28rem}
-.wl{font-size:.52rem;width:88px;color:#3a6a44;flex-shrink:0;line-height:1.3}
-.wt{flex:1;height:9px;position:relative;cursor:pointer;border:1px solid}
-.wt.sel{filter:brightness(1.9);outline:1px solid currentColor}
-.wd{width:7px;height:7px;position:absolute;top:1px;animation:wd 1s steps(16) infinite}
-@keyframes wd{0%{left:0}100%{left:calc(100% - 7px)}}
-.wn{font-size:.48rem;color:#3a6a44;width:50px;text-align:right}
-.trow{display:flex;gap:.35rem;justify-content:center;margin-top:.3rem}
-.ts{width:36px;height:36px;background:#06100a;border:1px solid #1a3a22;display:flex;align-items:center;justify-content:center;font-size:.5rem;cursor:pointer;color:#3a6a44;box-shadow:1px 1px 0 #000}
-.ts:hover{border-color:#3a7a48;color:#7abf84}
-.ts.ok{border-color:#3a8a48;color:#62a870;background:rgba(30,100,40,.12)}
-.ts.bad{border-color:#8a1515;color:#cc2a2a;background:rgba(150,20,20,.1)}
-.lw-w{font-size:.56rem;color:#c89040;text-align:center;padding:.3rem;border:1px solid #5a4010;background:rgba(60,40,10,.18);display:none}
+      /* ═══════════ MINIGAME OVERLAY ═══════════ */
+      #mgOv{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;flex-direction:column}
+      #mgOv.on{display:flex}
+      #mgBox{background:#09130e;border:1px solid #2a5c38;box-shadow:3px 3px 0 #000;max-width:min(680px,96vw);width:100%;display:flex;flex-direction:column;max-height:94vh;overflow-y:auto}
+      .mg-hd{background:#0d1a12;border-bottom:1px solid #1a3a22;padding:.35rem .7rem;display:flex;align-items:center;justify-content:space-between}
+      .mg-ht{font-size:.88rem;color:#62a870;letter-spacing:.16em}
+      .mg-esc{font-size:.62rem;color:#3a6a44;cursor:pointer;padding:.18rem .45rem;border:1px solid #1a3a22}
+      .mg-esc:hover{color:#7abf84}
+      .mg-bd{padding:.7rem;display:flex;flex-direction:column;align-items:center;gap:.55rem}
+      .mg-inst{font-size:.76rem;color:#3a6a44;text-align:center;max-width:480px;line-height:1.7}
+      .mg-st{font-size:.76rem;color:#3a6a44;min-height:.9rem;text-align:center}
+      .mg-st b{color:#7abf84}
+      .mg-res{display:none;flex-direction:column;align-items:center;gap:.45rem;text-align:center}
+      .mg-res.on{display:flex}
+      .mg-rl{font-size:1.2rem;letter-spacing:.18em}
+      .mg-rl.win{color:#62a870}
+      .mg-rl.lose{color:#cc2a2a}
+      .mg-rm{font-size:.76rem;color:#3a6a44;max-width:340px;line-height:1.7}
 
-/* pc term */
-.pcterm{background:#000;border:1px solid #0a2a0a;padding:.6rem;font-size:.6rem;width:min(480px,90vw);height:200px;overflow-y:auto;color:#00cc00;line-height:1.7;scrollbar-width:thin;scrollbar-color:#0a3a0a #000}
-.pc-ir{display:flex;gap:.3rem;align-items:center;width:min(480px,90vw)}
-.pc-pr{color:#00cc00;font-size:.6rem;flex-shrink:0}
-.pc-in{flex:1;background:transparent;border:none;border-bottom:1px solid #00cc00;color:#00cc00;font-family:'Courier New',monospace;font-size:.6rem;outline:none;padding:.18rem 0;letter-spacing:.06em}
+      /* wire */
+      .wa{background:#06100a;border:1px solid #111e14;padding:.6rem;width:min(480px,90vw)}
+      .wr{display:flex;align-items:center;gap:.45rem;margin-bottom:.28rem}
+      .wl{font-size:.68rem;width:88px;color:#3a6a44;flex-shrink:0;line-height:1.3}
+      .wt{flex:1;height:18px;position:relative;cursor:pointer;border:1px solid;border-radius:4px}
+      .wt.sel{filter:brightness(1.9);outline:1px solid currentColor}
+      .wd{width:7px;height:15px;position:absolute;top:1.5px;animation:wd 1s steps(16) infinite}
+      @keyframes wd{0%{left:0}100%{left:calc(100% - 7px)}}
+      .wn{font-size:.64rem;color:#3a6a44;width:50px;text-align:right}
+      .trow{display:flex;gap:.35rem;justify-content:center;margin-top:.3rem}
+      .ts{width:52px;height:52px;background:#06100a;border:2px solid #1a3a22;display:flex;align-items:center;justify-content:center;font-size:.7rem;cursor:pointer;color:#3a6a44;box-shadow:2px 2px 0 #000;font-weight:bold;transition:all .2s}
+      .ts:hover{border-color:#3a7a48;color:#7abf84}
+      .ts.ok{border-color:#3a8a48;color:#62a870;background:rgba(30,100,40,.25);transform:scale(1.1)}
+      .ts.bad{border-color:#8a1515;color:#cc2a2a;background:rgba(150,20,20,.2);transform:scale(0.95)}
+      .lw-w{font-size:.56rem;color:#c89040;text-align:center;padding:.3rem;border:1px solid #5a4010;background:rgba(60,40,10,.18);display:none}
 
-/* elevator */
-.edsp{font-family:'Courier New',monospace;font-size:1.4rem;color:#62a870;background:#050809;border:1px solid #2a5c38;box-shadow:1px 1px 0 #000;padding:.28rem .75rem;text-align:center;letter-spacing:.3em;width:min(210px,80vw)}
-.epad{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:min(210px,80vw)}
-.ek{padding:.55rem;font-family:'Courier New',monospace;font-size:1.1rem;background:#09130e;border:1px solid #1a3a22;box-shadow:1px 1px 0 #000;cursor:pointer;color:#7abf84;text-align:center}
-.ek:hover{border-color:#3a7a48;color:#8ad094}
-.ek:active{transform:translate(1px,1px);box-shadow:none}
+      /* pc term */
+      .pcterm{background:#000;border:1px solid #0a2a0a;padding:.6rem;font-size:.8rem;width:min(480px,90vw);height:200px;overflow-y:auto;color:#00cc00;line-height:1.7;scrollbar-width:thin;scrollbar-color:#0a3a0a #000}
+      .pc-ir{display:flex;gap:.3rem;align-items:center;width:min(480px,90vw)}
+      .pc-pr{color:#00cc00;font-size:.8rem;flex-shrink:0}
+      .pc-in{flex:1;background:transparent;border:none;border-bottom:1px solid #00cc00;color:#00cc00;font-family:'Courier New',monospace;font-size:.8rem;outline:none;padding:.18rem 0;letter-spacing:.06em}
 
-/* boss */
-#bossCV{border:1px solid #1a3a22;box-shadow:2px 2px 0 #000;max-width:min(480px,90vw)}
-.bbs{display:flex;gap:.7rem;width:min(480px,90vw)}
-.bbw{flex:1}
-.bbl{font-size:.46rem;letter-spacing:.09em;margin-bottom:.12rem}
-.bbt{height:9px;background:#06100a;border:1px solid #111e14}
-.bbf{height:100%;transition:width .22s steps(8)}
-.bbv{font-size:.42rem;color:#3a6a44;margin-top:.1rem;text-align:right}
-.bacts{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:center;max-width:480px}
-.blog{background:#050809;border:1px solid #111e14;font-size:.54rem;padding:.35rem .55rem;width:min(480px,90vw);height:66px;overflow-y:auto;line-height:1.7;scrollbar-width:thin;scrollbar-color:#1a3a22 #050809}
-.blp{color:#62a870}.ble{color:#cc2a2a}.bln{color:#3a6a44}
+      /* elevator */
+      .edsp{font-family:'Courier New',monospace;font-size:1.8rem;color:#62a870;background:#050809;border:1px solid #2a5c38;box-shadow:1px 1px 0 #000;padding:.28rem .75rem;text-align:center;letter-spacing:.3em;width:min(210px,80vw)}
+      .epad{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:min(210px,80vw)}
+      .ek{padding:.55rem;font-family:'Courier New',monospace;font-size:1.4rem;background:#09130e;border:1px solid #1a3a22;box-shadow:1px 1px 0 #000;cursor:pointer;color:#7abf84;text-align:center}
+      .ek:hover{border-color:#3a7a48;color:#8ad094}
+      .ek:active{transform:translate(1px,1px);box-shadow:none}
 
-/* sus */
-.sus-npc{display:flex;align-items:flex-start;gap:.7rem;width:min(460px,90vw)}
-.sus-pb{width:88px;height:108px;background:#06100a;border:1px solid #5a4010;flex-shrink:0;overflow:hidden}
-.sus-sp{flex:1;background:#09130e;border:1px solid #111e14;padding:.55rem .75rem;font-size:.6rem;line-height:1.8}
-.sus-mt{display:flex;align-items:center;gap:.35rem;width:min(460px,90vw)}
-.sus-ml{font-size:.46rem;color:#cc2a2a;letter-spacing:.09em;white-space:nowrap}
-.sus-mtr{flex:1;height:7px;background:#1a0808;border:1px solid #380e0e}
-.sus-mf{height:100%;background:#cc2a2a;transition:width .3s steps(8)}
-.sus-mv{font-size:.46rem;color:#cc2a2a;white-space:nowrap}
-.sus-opts{display:flex;flex-direction:column;gap:.24rem;width:min(460px,90vw)}
+      /* boss */
+      #bossCV{border:1px solid #1a3a22;box-shadow:2px 2px 0 #000;max-width:min(480px,90vw);background:linear-gradient(135deg,#1a0f0a 0%,#0a1a14 50%,#050f0a 100%),repeating-linear-gradient(90deg,rgba(0,0,0,.3) 0,rgba(0,0,0,.3) 2px,transparent 2px,transparent 4px)}
+      .bbs{display:flex;gap:.7rem;width:min(480px,90vw)}
+      .bbw{flex:1}
+      .bbl{font-size:.62rem;letter-spacing:.09em;margin-bottom:.12rem}
+      .bbt{height:9px;background:#06100a;border:1px solid #111e14}
+      .bbf{height:100%;transition:width .22s steps(8)}
+      .bbv{font-size:.56rem;color:#3a6a44;margin-top:.1rem;text-align:right}
+      .bacts{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:center;max-width:480px}
+      .blog{background:#050809;border:1px solid #111e14;font-size:.72rem;padding:.35rem .55rem;width:min(480px,90vw);height:66px;overflow-y:auto;line-height:1.7;scrollbar-width:thin;scrollbar-color:#1a3a22 #050809}
+      .blp{color:#62a870}.ble{color:#cc2a2a}.bln{color:#3a6a44}
 
-/* ═══════════ DEATH ═══════════ */
-#sDeath{flex-direction:column;align-items:center;justify-content:center;background:#080206;text-align:center;padding:2rem;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0,rgba(0,0,0,.18) 1px,transparent 1px,transparent 4px)}
-.d-sk{font-size:3.5rem;animation:pulse 1.4s ease-in-out infinite;margin-bottom:.4rem}
-@keyframes pulse{50%{opacity:.4}}
-.d-t{font-size:clamp(1.1rem,3.8vw,1.9rem);color:#cc2a2a;letter-spacing:.09em;margin-bottom:.35rem}
-.d-dv{width:130px;height:2px;margin:.35rem auto .7rem;background:repeating-linear-gradient(90deg,#cc2a2a 0,#cc2a2a 4px,transparent 4px,transparent 8px)}
-.d-b{max-width:460px;font-size:.64rem;line-height:1.92;opacity:.78;margin-bottom:.9rem;white-space:pre-line}
-.d-c{font-size:.48rem;letter-spacing:.16em;color:#6a1515;margin-bottom:1.1rem}
+      /* sus */
+      .sus-npc{display:flex;align-items:flex-start;gap:.7rem;width:min(460px,90vw)}
+      .sus-pb{width:88px;height:108px;background:#06100a;border:1px solid #5a4010;flex-shrink:0;overflow:hidden}
+      .sus-sp{flex:1;background:#09130e;border:1px solid #111e14;padding:.55rem .75rem;font-size:.8rem;line-height:1.8}
+      .sus-mt{display:flex;align-items:center;gap:.35rem;width:min(460px,90vw)}
+      .sus-ml{font-size:.62rem;color:#cc2a2a;letter-spacing:.09em;white-space:nowrap}
+      .sus-mtr{flex:1;height:7px;background:#1a0808;border:1px solid #380e0e}
+      .sus-mf{height:100%;background:#cc2a2a;transition:width .3s steps(8)}
+      .sus-mv{font-size:.62rem;color:#cc2a2a;white-space:nowrap}
+      .sus-opts{display:flex;flex-direction:column;gap:.24rem;width:min(460px,90vw)}
 
-/* ═══════════ FINAL ═══════════ */
-#sFinal{flex-direction:column;align-items:center;justify-content:center;background:#050809;text-align:center;padding:2rem;background-image:linear-gradient(rgba(40,100,50,.02)1px,transparent 1px),linear-gradient(90deg,rgba(40,100,50,.02)1px,transparent 1px);background-size:8px 8px}
-.f-eye{font-size:.44rem;color:#3a6a44;letter-spacing:.32em;margin-bottom:.32rem}
-.f-num{font-size:5rem;opacity:.1;line-height:1}
-.f-tit{font-size:clamp(.95rem,3.5vw,1.85rem);letter-spacing:.09em;margin-bottom:.45rem}
-.f-dv{height:2px;width:130px;margin:.35rem auto .8rem}
-.f-b{max-width:520px;font-size:.65rem;line-height:1.95;opacity:.8;margin-bottom:1rem;white-space:pre-line}
-.f-tg{font-size:.48rem;color:#3a6a44;letter-spacing:.13em;margin-bottom:1.1rem}
+      /* ═══════════ DEATH ═══════════ */
+      #sDeath{flex-direction:column;align-items:center;justify-content:center;background:#080206;text-align:center;padding:2rem;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0,rgba(0,0,0,.18) 1px,transparent 1px,transparent 4px)}
+      .d-sk{font-size:3.5rem;animation:pulse 1.4s ease-in-out infinite;margin-bottom:.4rem}
+      @keyframes pulse{50%{opacity:.4}}
+      .d-t{font-size:clamp(1.4rem,4vw,2.2rem);color:#cc2a2a;letter-spacing:.09em;margin-bottom:.35rem}
+      .d-dv{width:130px;height:2px;margin:.35rem auto .7rem;background:repeating-linear-gradient(90deg,#cc2a2a 0,#cc2a2a 4px,transparent 4px,transparent 8px)}
+      .d-b{max-width:460px;font-size:.84rem;line-height:1.92;opacity:.78;margin-bottom:.9rem;white-space:pre-line}
+      .d-c{font-size:.64rem;letter-spacing:.16em;color:#6a1515;margin-bottom:1.1rem}
 
-/* ═══════════ MURAL ═══════════ */
-#sMural{flex-direction:column;background:#050809;padding:1.1rem;overflow-y:auto}
-.mural-t{font-size:.95rem;color:#62a870;letter-spacing:.18em;text-align:center;margin-bottom:.9rem}
-.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:.55rem}
-.mc{background:#09130e;border:1px solid #111e14;padding:.55rem .75rem;position:relative;box-shadow:2px 2px 0 #000}
-.mc.open{border-color:#2a5c38}
-.mc.death{}.mc.death.open{border-color:#6a1515}
-.mc-n{font-size:1.8rem;opacity:.12;line-height:1}
-.mc-nm{font-size:.56rem;letter-spacing:.09em;margin-bottom:.2rem}
-.mc-d{font-size:.5rem;color:#3a6a44;line-height:1.5}
-.mc-lk{position:absolute;top:.38rem;right:.5rem;font-size:.62rem;color:#2a5c38}
-.mc.open .mc-lk{color:#62a870}
-.mc.death.open .mc-lk{color:#cc2a2a}
+      /* ═══════════ FINAL ═══════════ */
+      #sFinal{flex-direction:column;align-items:center;justify-content:center;background:#050809;text-align:center;padding:2rem;background-image:linear-gradient(rgba(40,100,50,.02)1px,transparent 1px),linear-gradient(90deg,rgba(40,100,50,.02)1px,transparent 1px);background-size:8px 8px}
+      .f-eye{font-size:.62rem;color:#3a6a44;letter-spacing:.32em;margin-bottom:.32rem}
+      .f-num{font-size:5rem;opacity:.1;line-height:1}
+      .f-tit{font-size:clamp(1.2rem,3.8vw,2.2rem);letter-spacing:.09em;margin-bottom:.45rem}
+      .f-dv{height:2px;width:130px;margin:.35rem auto .8rem}
+      .f-b{max-width:520px;font-size:.85rem;line-height:1.95;opacity:.8;margin-bottom:1rem;white-space:pre-line}
+      .f-tg{font-size:.64rem;color:#3a6a44;letter-spacing:.13em;margin-bottom:1.1rem}
 
-/* find plug grid */
-.pgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;width:min(340px,88vw)}
-.pc{aspect-ratio:1;background:#06100a;border:1px solid #111e14;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;box-shadow:1px 1px 0 #000}
-.pc:hover{border-color:#2a5c38}
-.pc.found{border-color:#3a8a48;background:rgba(30,100,40,.15)}
-.pc.no{border-color:#6a1515;background:rgba(100,15,15,.1)}
+      /* ═══════════ MURAL ═══════════ */
+      #sMural{flex-direction:column;background:#050809;padding:1.1rem;overflow-y:auto}
+      .mural-t{font-size:1.2rem;color:#62a870;letter-spacing:.18em;text-align:center;margin-bottom:.9rem}
+      .mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:.55rem}
+      .mc{background:#09130e;border:1px solid #111e14;padding:.55rem .75rem;position:relative;box-shadow:2px 2px 0 #000}
+      .mc.open{border-color:#2a5c38}
+      .mc.death{}.mc.death.open{border-color:#6a1515}
+      .mc-n{font-size:1.8rem;opacity:.12;line-height:1}
+      .mc-nm{font-size:.72rem;letter-spacing:.09em;margin-bottom:.2rem}
+      .mc-d{font-size:.68rem;color:#3a6a44;line-height:1.5}
+      .mc-lk{position:absolute;top:.38rem;right:.5rem;font-size:.8rem;color:#2a5c38}
+      .mc.open .mc-lk{color:#62a870}
+      .mc.death.open .mc-lk{color:#cc2a2a}
 
-/* save progress */
-.pbar{width:min(340px,88vw)}
-.pbtr{height:11px;background:#06100a;border:1px solid #111e14}
-.pbf{height:100%;background:#3a8a48;transition:width .12s}
-.pblb{font-size:.5rem;color:#3a6a44;text-align:center;margin-top:.22rem}
+      /* find plug grid */
+      .pgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;width:min(340px,88vw)}
+      .pc{aspect-ratio:1;background:#06100a;border:1px solid #111e14;display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;box-shadow:1px 1px 0 #000}
+      .pc:hover{border-color:#2a5c38}
+      .pc.found{border-color:#3a8a48;background:rgba(30,100,40,.15)}
+      .pc.no{border-color:#6a1515;background:rgba(100,15,15,.1)}
 
-/* save options */
-.svopts{display:flex;flex-direction:column;gap:.3rem;width:min(440px,88vw)}
-.svopt{background:#09130e;border:1px solid #1a3a22;padding:.45rem .75rem;cursor:pointer;display:flex;align-items:center;gap:.55rem;box-shadow:1px 1px 0 #000}
-.svopt:hover{border-color:#2a5c38;background:#0d1a12}
-.svopt.locked{opacity:.3;pointer-events:none}
-.svopt.sel{border-color:#3a8a48;background:rgba(30,100,40,.1)}
-.svopt-ic{font-size:1rem;flex-shrink:0;width:18px;text-align:center}
-.svopt-nm{font-size:.58rem;letter-spacing:.07em}
-.svopt-dc{font-size:.48rem;color:#3a6a44;margin-top:.08rem}
+      /* save progress */
+      .pbar{width:min(340px,88vw)}
+      .pbtr{height:11px;background:#06100a;border:1px solid #111e14}
+      .pbf{height:100%;background:#3a8a48;transition:width .12s}
+      .pblb{font-size:.68rem;color:#3a6a44;text-align:center;margin-top:.22rem}
+
+      /* save options */
+      .svopts{display:flex;flex-direction:column;gap:.3rem;width:min(440px,88vw)}
+      .svopt{background:#09130e;border:1px solid #1a3a22;padding:.45rem .75rem;cursor:pointer;display:flex;align-items:center;gap:.55rem;box-shadow:1px 1px 0 #000}
+      .svopt:hover{border-color:#2a5c38;background:#0d1a12}
+      .svopt.locked{opacity:.3;pointer-events:none}
+      .svopt.sel{border-color:#3a8a48;background:rgba(30,100,40,.1)}
+      .svopt-ic{font-size:1.3rem;flex-shrink:0;width:18px;text-align:center}
+      .svopt-nm{font-size:.76rem;letter-spacing:.07em}
+      .svopt-dc{font-size:.64rem;color:#3a6a44;margin-top:.08rem}
 </style>
-</head>
-<body>
-<div id="crt"></div>
-<div id="flashEl"></div>
-<div id="notifBox"></div>
+  </head>
+  <body>
+    <div id="crt"></div>
+    <div id="flashEl"></div>
+    <div id="notifBox"></div>
 
-<!-- TITLE -->
-<div class="scr on" id="sTitle">
-  <canvas id="titleArt" width="260" height="84"></canvas>
-  <div class="t-corp">NEXUS ENTERPRISE // SISTEMA INTERNO — ANO 50 PÓS-APAGÃO</div>
-  <div class="t-logo">A ANOMALIA DA<br>NEXUS ENTERPRISE</div>
-  <div class="t-sub">VISUAL NOVEL INTERATIVA</div>
-  <div class="t-div"></div>
-  <div class="t-lbl">NOME DO AGENTE</div>
-  <input class="t-inp" id="tName" type="text" placeholder="SEU NOME" maxlength="16" autocomplete="off" spellcheck="false">
-  <div class="t-lbl" style="margin-top:.45rem">GÊNERO</div>
-  <div style="display:flex;gap:.7rem;justify-content:center;margin:.3rem 0">
-    <label class="grad"><input type="radio" name="gen" value="f" checked> Feminino</label>
-    <label class="grad"><input type="radio" name="gen" value="m"> Masculino</label>
-    <label class="grad"><input type="radio" name="gen" value="n"> Neutro</label>
-  </div>
-  <button class="pb" onclick="G.startGame()" style="margin-top:.7rem">[ INICIAR INVESTIGAÇÃO ]</button>
-  <button class="pb sm" onclick="G.tryResume()" style="margin-top:.35rem">[ RETOMAR SESSÃO ]</button>
-  <button class="pb sm" onclick="G.openMural(true)" style="margin-top:.2rem">[ MURAL DE FINAIS ]</button>
-  <div class="t-warn">⚠ HORROR PSICOLÓGICO — INSPIRADO EM I HAVE NO MOUTH AND I MUST SCREAM<br>O GRANDE APAGÃO OCORREU HÁ 50 ANOS</div>
-</div>
-
-<!-- GAME -->
-<div class="scr" id="sGame">
-  <div id="sceneArea">
-    <canvas id="sceneCV"></canvas>
-    <div id="sceneLbl"></div>
-    <div id="camTm"></div>
-    <div id="itemCard"><div class="ic-title" id="icTitle"></div><div id="icBody"></div></div>
-  </div>
-  <div id="uiBot">
-    <div id="dialRow">
-      <div id="portWrap">
-        <canvas id="portCV" width="88" height="100"></canvas>
-        <div id="spkName">—</div>
+    <!-- TITLE -->
+    <div class="scr on" id="sTitle">
+      <canvas id="titleArt" width="260" height="84"></canvas>
+      <div class="t-corp">NEXUS ENTERPRISE // SISTEMA INTERNO — ANO 50
+        PÓS-APAGÃO</div>
+      <div class="t-logo">A ANOMALIA DA<br>NEXUS ENTERPRISE</div>
+      <div class="t-sub">VISUAL NOVEL INTERATIVA</div>
+      <div class="t-div"></div>
+      <div class="t-lbl">NOME DO AGENTE</div>
+      <input class="t-inp" id="tName" type="text" placeholder="SEU NOME"
+        maxlength="16" autocomplete="off" spellcheck="false">
+      <div class="t-lbl" style="margin-top:.45rem">GÊNERO</div>
+      <div style="display:flex;gap:.7rem;justify-content:center;margin:.3rem 0">
+        <label class="grad"><input type="radio" name="gen" value="f" checked>
+          Feminino</label>
+        <label class="grad"><input type="radio" name="gen" value="m">
+          Masculino</label>
+        <label class="grad"><input type="radio" name="gen" value="n">
+          Neutro</label>
       </div>
-      <div id="txtArea">
-        <div id="dialTxt"></div>
-        <div id="advHint">▼ clique em qualquer lugar</div>
+      <button class="pb" onclick="G.startGame()" style="margin-top:.7rem">[
+        INICIAR INVESTIGAÇÃO ]</button>
+      <button class="pb sm" onclick="G.tryResume()" style="margin-top:.35rem">[
+        RETOMAR SESSÃO ]</button>
+      <button class="pb sm" onclick="G.openMural(true)"
+        style="margin-top:.2rem">[ MURAL DE FINAIS ]</button>
+      <div class="t-warn">AVISO: HORROR PSICOLÓGICO — INSPIRADO EM I HAVE NO
+        MOUTH
+        AND I MUST SCREAM<br>O GRANDE APAGÃO OCORREU HÁ 50 ANOS</div>
+    </div>
+
+    <!-- GAME -->
+    <div class="scr" id="sGame">
+      <div id="sceneArea">
+        <canvas id="sceneCV"></canvas>
+        <div id="sceneLbl"></div>
+        <div id="camTm"></div>
+        <div id="itemCard"><div class="ic-title" id="icTitle"></div><div
+            id="icBody"></div></div>
+        <div id="itemCardGame"></div>
+      </div>
+      <div id="uiBot">
+        <div id="dialRow">
+          <div id="portWrap">
+            <canvas id="portCV" width="88" height="100"></canvas>
+            <div id="spkName">—</div>
+          </div>
+          <div id="txtArea">
+            <div id="dialTxt"></div>
+            <div id="advHint">... clique em qualquer lugar</div>
+          </div>
+        </div>
+        <div id="choicesDiv"></div>
+        <button id="backBtn" onclick="G.goBack()"></button>
+        <div id="hudBar">
+          <div class="hc">SYNC <b id="hSV">75%</b><span class="hb"><span
+                class="hbf" id="hSB"
+                style="width:75%;background:#3a8a48"></span></span></div>
+          <div class="hsep"></div>
+          <div class="hc" style="color:#8a2020">SUSPEITA <b id="hSuV"
+              style="color:#cc2a2a">0%</b><span class="hb"><span class="hbf"
+                id="hSuB"
+                style="width:0%;background:#cc2a2a"></span></span></div>
+          <div class="hsep"></div>
+          <div class="hc">FRAG <b id="hFrag" style="color:#c89040">0</b></div>
+          <div class="sp"></div>
+          <button class="hbtn" onclick="G.openInv('items')">ITENS</button>
+          <button class="hbtn" onclick="G.openInv('lore')">LORE</button>
+          <button class="hbtn" onclick="G.openMural(false)">FINAIS</button>
+          <button class="hbtn y" style="margin-left:.3rem"
+            onclick="G.openSaveSlots()">SALVAR</button>
+          <button class="hbtn g" onclick="G.openLoadSlots()">CARREGAR</button>
+          <button class="hbtn r"
+            onclick="if(confirm('Sair para menu?')) G.returnToMenu()">MENU</button>
+        </div>
       </div>
     </div>
-    <div id="choicesDiv"></div>
-    <button id="backBtn" onclick="G.goBack()"></button>
-    <div id="hudBar">
-      <div class="hc">SYNC <b id="hSV">75%</b><span class="hb"><span class="hbf" id="hSB" style="width:75%;background:#3a8a48"></span></span></div>
-      <div class="hsep"></div>
-      <div class="hc" style="color:#8a2020">SUSPEITA <b id="hSuV" style="color:#cc2a2a">0%</b><span class="hb"><span class="hbf" id="hSuB" style="width:0%;background:#cc2a2a"></span></span></div>
-      <div class="hsep"></div>
-      <div class="hc">FRAG <b id="hFrag" style="color:#c89040">0</b></div>
-      <div class="sp"></div>
-      <button class="hbtn" onclick="G.openInv('items')">ITENS</button>
-      <button class="hbtn" onclick="G.openInv('lore')">LORE</button>
-      <button class="hbtn" onclick="G.openMural(false)">FINAIS</button>
+
+    <!-- DEATH -->
+    <div class="scr" id="sDeath">
+      <div class="d-sk">[MORTE]</div>
+      <div class="d-t" id="dT">VOCÊ MORREU</div>
+      <div class="d-dv"></div>
+      <div class="d-b" id="dB"></div>
+      <div class="d-c" id="dC"></div>
+      <button class="pb r" onclick="G.restart()">[ REINICIAR ]</button>
+      <button class="pb sm" style="margin-top:.35rem"
+        onclick="G.openMural(true)">[ VER MURAL ]</button>
     </div>
-  </div>
-</div>
 
-<!-- DEATH -->
-<div class="scr" id="sDeath">
-  <div class="d-sk">💀</div>
-  <div class="d-t" id="dT">VOCÊ MORREU</div>
-  <div class="d-dv"></div>
-  <div class="d-b" id="dB"></div>
-  <div class="d-c" id="dC"></div>
-  <button class="pb r" onclick="G.restart()">[ REINICIAR ]</button>
-  <button class="pb sm" style="margin-top:.35rem" onclick="G.openMural(true)">[ VER MURAL ]</button>
-</div>
-
-<!-- FINAL -->
-<div class="scr" id="sFinal">
-  <div class="f-eye">NEXUS ENTERPRISE // REGISTRO DE OCORRÊNCIA</div>
-  <div class="f-num" id="fN"></div>
-  <div class="f-tit" id="fT"></div>
-  <div class="f-dv" id="fD"></div>
-  <div class="f-b" id="fB"></div>
-  <div class="f-tg" id="fG"></div>
-  <button class="pb sm" onclick="G.openMural(true)">[ MURAL DE FINAIS ]</button>
-  <button class="pb sm" style="margin-top:.35rem" onclick="G.restart()">[ REINICIAR ]</button>
-</div>
-
-<!-- MURAL -->
-<div class="scr" id="sMural">
-  <div class="mural-t">◈ MURAL DE FINAIS</div>
-  <div class="mg" id="muralGrid"></div>
-  <div style="text-align:center;margin-top:.9rem"><button class="pb sm" onclick="G.closeMural()">[ VOLTAR ]</button></div>
-</div>
-
-<!-- INVENTORY -->
-<div id="invOv">
-  <div id="invBox">
-    <div class="inv-hd"><div class="inv-ht">INVENTÁRIO</div><button class="pb sm" onclick="G.closeInv()">[ FECHAR ]</button></div>
-    <div class="inv-tabs">
-      <div class="itab on" id="it-items" onclick="G.switchTab('items')">ITENS</div>
-      <div class="itab" id="it-lore" onclick="G.switchTab('lore')">LORE / DOCS</div>
+    <!-- FINAL -->
+    <div class="scr" id="sFinal">
+      <div class="f-eye">NEXUS ENTERPRISE // REGISTRO DE OCORRÊNCIA</div>
+      <div class="f-num" id="fN"></div>
+      <div class="f-tit" id="fT"></div>
+      <div class="f-dv" id="fD"></div>
+      <div class="f-b" id="fB"></div>
+      <div class="f-tg" id="fG"></div>
+      <button class="pb sm" onclick="G.openMural(true)">[ MURAL DE FINAIS
+        ]</button>
+      <button class="pb sm" style="margin-top:.35rem" onclick="G.restart()">[
+        REINICIAR ]</button>
     </div>
-    <div class="inv-body">
-      <div class="inv-list" id="invList"></div>
-      <div class="inv-det"><div class="inv-dt" id="invDT">Selecione um item</div><div class="inv-db" id="invDB"></div><div class="inv-use" id="invUse"><button class="pb sm y" onclick="G.useItem()">[ USAR AQUI ]</button></div></div>
+
+    <!-- MURAL -->
+    <div class="scr" id="sMural">
+      <div class="mural-t">== MURAL DE FINAIS ==</div>
+      <div class="mg" id="muralGrid"></div>
+      <div style="text-align:center;margin-top:.9rem"><button class="pb sm"
+          onclick="G.closeMural()">[ VOLTAR ]</button></div>
     </div>
-  </div>
-</div>
 
-<!-- MINIGAME -->
-<div id="mgOv">
-  <div id="mgBox">
-    <div class="mg-hd"><div class="mg-ht" id="mgHT">MINIGAME</div><div class="mg-esc" id="mgEsc" onclick="G.closeMG()">[ ESC — SAIR ]</div></div>
-    <div class="mg-bd" id="mgBD"></div>
-  </div>
-</div>
+    <!-- INVENTORY -->
+    <div id="invOv">
+      <div id="invBox">
+        <div class="inv-hd"><div class="inv-ht">INVENTÁRIO</div><button
+            class="pb sm" onclick="G.closeInv()">[ FECHAR ]</button></div>
+        <div class="inv-tabs">
+          <div class="itab on" id="it-items"
+            onclick="G.switchTab('items')">ITENS</div>
+          <div class="itab" id="it-lore" onclick="G.switchTab('lore')">LORE /
+            DOCS</div>
+        </div>
+        <div class="inv-body">
+          <div class="inv-list" id="invList"></div>
+          <div class="inv-det"><div class="inv-dt" id="invDT">Selecione um
+              item</div><div class="inv-db" id="invDB"></div><div
+              class="inv-use" id="invUse"><button class="pb sm y"
+                onclick="G.useItem()">[ USAR AQUI ]</button></div></div>
+        </div>
+      </div>
+    </div>
 
-<script>
+    <!-- SAVE SLOTS -->
+    <div id="saveOv">
+      <div id="saveBox">
+        <div class="inv-hd"><div class="inv-ht">SALVAR PROGRESSO</div><button
+            class="pb sm" onclick="G.closeSaveSlots()">[ FECHAR ]</button></div>
+        <div id="slotsContainer"></div>
+      </div>
+    </div>
+
+    <!-- RESUME SLOTS -->
+    <div id="resumeOv">
+      <div id="resumeBox">
+        <div class="inv-hd"><div class="inv-ht">RETOMAR JOGO</div><button
+            class="pb sm" onclick="G.closeResumeSlots()">[ FECHAR
+            ]</button></div>
+        <div id="resumeContainer"></div>
+      </div>
+    </div>
+
+    <!-- LOAD SLOTS -->
+    <div id="loadOv">
+      <div id="loadBox">
+        <div class="inv-hd"><div class="inv-ht">CARREGAR PROGRESSO</div><button
+            class="pb sm" onclick="G.closeLoadSlots()">[ FECHAR ]</button></div>
+        <div id="loadsContainer"></div>
+      </div>
+    </div>
+
+    <!-- MINIGAME -->
+    <div id="mgOv">
+      <div id="mgBox">
+        <div class="mg-hd"><div class="mg-ht" id="mgHT">MINIGAME</div><div
+            class="mg-esc" id="mgEsc" onclick="G.closeMG()">[ ESC — SAIR
+            ]</div></div>
+        <div class="mg-bd" id="mgBD"></div>
+      </div>
+    </div>
+
+    <script>
 // ════════════════════════════════════════════════════════════════
 // SECTION 1: CORE ENGINE
 // ════════════════════════════════════════════════════════════════
@@ -373,13 +446,45 @@ const G = {};
 
 // ── Save/Load (robusto) ──
 const SAVE_KEY = 'nexus6_state';
+const SLOTS_KEY = 'nexus6_slots';
 const MURAL_KEY = 'nexus6_mural';
+
+G.getSaveSlots = () => {
+  try {
+    const s = localStorage.getItem(SLOTS_KEY) || sessionStorage.getItem(SLOTS_KEY) || '{"1":{},"2":{},"3":{}}';
+    return JSON.parse(s);
+  } catch(e) { return {'1':{},'2':{},'3':{}}; }
+};
+
+G.saveToSlot = (slot) => {
+  if (!G.S) return;
+  try {
+    const slots = G.getSaveSlots();
+    slots[slot] = { ...G.S, timestamp: new Date().toLocaleString() };
+    localStorage.setItem(SLOTS_KEY, JSON.stringify(slots));
+    sessionStorage.setItem(SLOTS_KEY, JSON.stringify(slots));
+    G.notify(`Jogo salvo no SLOT ${slot}`, 'item');
+    G.openSaveSlots(); // Recarregar modal com dados atualizados
+    return true;
+  } catch(e) { console.warn('Slot save failed:', e); return false; }
+};
+
+G.loadFromSlot = (slot) => {
+  try {
+    const slots = G.getSaveSlots();
+    if (slots[slot] && Object.keys(slots[slot]).length > 0) {
+      G.S = slots[slot];
+      return true;
+    }
+  } catch(e) { console.warn('Slot load failed:', e); }
+  return false;
+};
 
 G.saveState = () => {
   try {
     const data = JSON.stringify(G.S);
     localStorage.setItem(SAVE_KEY, data);
-    sessionStorage.setItem(SAVE_KEY, data); // backup
+    sessionStorage.setItem(SAVE_KEY, data);
   } catch(e) { console.warn('Save failed:', e); }
 };
 
@@ -495,6 +600,18 @@ G.showItemCard = (title, body) => {
 };
 G.hideItemCard = () => { $('itemCard').style.display = 'none'; };
 
+G.showItemCardGame = (title, body) => {
+  const card = $('itemCardGame');
+  if (!card) return;
+  card.innerHTML = `<div style="color:#7abf84;font-weight:bold;margin-bottom:.3rem;font-size:.6rem;letter-spacing:.08em">${title}</div><div style="color:#3a6a44;font-size:.52rem;white-space:pre-wrap;line-height:1.4">${body}</div>`;
+  card.classList.add('on');
+};
+
+G.hideItemCardGame = () => {
+  const card = $('itemCardGame');
+  if (card) card.classList.remove('on');
+};
+
 // ── Clock ──
 G.startClock = () => {
   clearInterval(G._clk);
@@ -517,19 +634,148 @@ G.startGame = () => {
 };
 
 G.tryResume = () => {
-  if (G.loadState() && G.S.scene) {
-    G.showScr('sGame');
-    G.updateHUD();
-    G.startClock();
-    G.goScene(G.S.scene);
+  const slots = G.getSaveSlots();
+  const hasSaves = Object.values(slots).some(s => s.name);
+  if (hasSaves) {
+    $('resumeOv').classList.add('on');
+    const cont = $('resumeContainer');
+    cont.innerHTML = '';
+    for (let i = 1; i <= 3; i++) {
+      const s = slots[i] || {};
+      if (s.name) {
+        const el = document.createElement('div');
+        el.className = 'slotCard';
+        el.innerHTML = `
+          <div style="font-size:.72rem;color:#7abf84;margin-bottom:.3rem">SLOT ${i}</div>
+          <div style="font-size:.56rem;color:#3a6a44;margin-bottom:.5rem">
+            Nome: ${s.name}<br>Cena: ${s.scene || 'N/A'}<br>Tempo: ${s.timestamp || 'N/A'}
+          </div>
+          <button class="pb sm g" onclick="G.resumeFromSlot(${i})">[ RETOMAR ]</button>
+        `;
+        cont.appendChild(el);
+      }
+    }
   } else {
     alert('Nenhuma sessão encontrada.');
   }
 };
 
+G.resumeFromSlot = (slot) => {
+  if (G.loadFromSlot(slot)) {
+    G.showScr('sGame');
+    G.updateHUD();
+    G.startClock();
+    
+    // Preparar cena sem resetar lineIdx
+    const sc = SCENES[G.S.scene];
+    if (sc) {
+      if (sc.mg) { G.openMG(sc.mg); }
+      else if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause); }
+      else if (sc.final) { G.doFinal(sc.final); }
+      else {
+        G.showScr('sGame');
+        ART.draw(sc.art || 'corridor');
+        PORT.draw();
+        G.renderLine(); // Renderiza a linha no índice salvo
+      }
+    }
+    
+    $('resumeOv').classList.remove('on');
+  } else {
+    alert('Erro ao carregar save.');
+  }
+};
+
+G.closeResumeSlots = () => {
+  $('resumeOv').classList.remove('on');
+};
+
 G.restart = () => {
   try { localStorage.removeItem(SAVE_KEY); sessionStorage.removeItem(SAVE_KEY); } catch(e) {}
   location.reload();
+};
+
+G.returnToMenu = () => {
+  G.showScr('sTitle');
+  G.S = null;
+  $('tName').value = '';
+};
+
+G.saveCheckpoint = (label) => {
+  G.saveState();
+  console.log('[CHECKPOINT] ' + label);
+};
+
+G.openSaveSlots = () => {
+  $('saveOv').classList.add('on');
+  const slots = G.getSaveSlots();
+  const cont = $('slotsContainer');
+  cont.innerHTML = '';
+  for (let i = 1; i <= 3; i++) {
+    const s = slots[i] || {};
+    const el = document.createElement('div');
+    el.className = 'slotCard';
+    const hasData = s.name ? 'true' : '';
+    el.style.opacity = hasData ? '1' : '0.6';
+    el.innerHTML = `
+      <div style="font-size:.72rem;color:#7abf84;margin-bottom:.3rem">SLOT ${i}</div>
+      <div style="font-size:.56rem;color:#3a6a44;margin-bottom:.5rem">
+        ${s.name ? `Nome: ${s.name}<br>Cena: ${s.scene || 'N/A'}<br>Tempo: ${s.timestamp || 'N/A'}` : '[VAZIO]'}
+      </div>
+      <button class="pb sm" onclick="G.saveToSlot(${i})">[ SALVAR ]</button>
+    `;
+    cont.appendChild(el);
+  }
+};
+
+G.closeSaveSlots = () => {
+  $('saveOv').classList.remove('on');
+};
+
+G.openLoadSlots = () => {
+  $('loadOv').classList.add('on');
+  const slots = G.getSaveSlots();
+  const cont = $('loadsContainer');
+  cont.innerHTML = '';
+  for (let i = 1; i <= 3; i++) {
+    const s = slots[i] || {};
+    if (s.name) {
+      const el = document.createElement('div');
+      el.className = 'slotCard';
+      el.innerHTML = `
+        <div style="font-size:.72rem;color:#7abf84;margin-bottom:.3rem">SLOT ${i}</div>
+        <div style="font-size:.56rem;color:#3a6a44;margin-bottom:.5rem">
+          Nome: ${s.name}<br>Cena: ${s.scene || 'N/A'}<br>Tempo: ${s.timestamp || 'N/A'}
+        </div>
+        <button class="pb sm g" onclick="G.loadAndResume(${i})">[ CARREGAR ]</button>
+      `;
+      cont.appendChild(el);
+    }
+  }
+};
+
+G.loadAndResume = (slot) => {
+  if (G.loadFromSlot(slot)) {
+    G.showScr('sGame');
+    G.updateHUD();
+    G.startClock();
+    const sc = SCENES[G.S.scene];
+    if (sc) {
+      if (sc.mg) { G.openMG(sc.mg); }
+      else if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause); }
+      else if (sc.final) { G.doFinal(sc.final); }
+      else {
+        ART.draw(sc.art || 'corridor');
+        PORT.draw();
+        G.renderLine();
+      }
+    }
+    $('loadOv').classList.remove('on');
+  }
+};
+
+G.closeLoadSlots = () => {
+  $('loadOv').classList.remove('on');
 };
 
 // ── Pronoun helpers ──
@@ -821,16 +1067,16 @@ G.skipTyping = () => {
 
 // Global click handler — advances dialogue
 document.getElementById('sGame').addEventListener('click', e => {
+  // If a minigame just closed, ignore the very next scene click to avoid accidental reopens
+  if (G._ignoreNextClick) { G._ignoreNextClick = false; return; }
   // Don't fire if clicking a button or choice
   if (e.target.closest('button') || e.target.closest('.ch') || e.target.closest('#hudBar') || e.target.closest('#backBtn')) return;
   G.sceneClick();
 });
 
 G.sceneClick = () => {
-  // Never advance if choices are showing
-  if ($('choicesDiv').style.display === 'flex') return;
-
   if (G.S.typing) {
+    // Completa a digitação instantaneamente ao clicar
     G.skipTyping();
     const sc = SCENES[G.S.scene];
     if (sc && sc.lines && sc.lines[G.S.lineIdx]) {
@@ -841,20 +1087,6 @@ G.sceneClick = () => {
     $('advHint').classList.add('blink');
     return;
   }
-
-  // Waiting to go to next scene
-  if (G._waitingNext) {
-    G._waitingNext = false;
-    $('advHint').classList.remove('blink');
-    $('advHint').style.display = 'none';
-    const nxt = typeof G._nextTarget === 'function' ? G._nextTarget() : G._nextTarget;
-    G._nextTarget = null;
-    if (nxt) G.goScene(nxt);
-    return;
-  }
-
-  // Only advance lines if hint is visible
-  if ($('advHint').style.display === 'none') return;
   G.S.lineIdx++;
   G.renderLine();
 };
@@ -868,8 +1100,6 @@ G.goScene = (sceneId) => {
   G.S.scene = sceneId;
   G.S.lineIdx = 0;
   G.S.typing = false;
-  G._waitingNext = false;
-  G._nextTarget = null;
   G.saveState();
 
   const sc = SCENES[sceneId];
@@ -955,9 +1185,17 @@ G.showChoicesOrNext = () => {
     $('advHint').style.display = 'block';
     $('advHint').textContent = '▼ clique para continuar';
     $('advHint').classList.add('blink');
-    // Mark that we're waiting for a next-click
-    G._waitingNext = true;
-    G._nextTarget = sc.next;
+    // one-time click on whole game area
+    const cont = (e) => {
+      // If a minigame just closed, ignore this click and remove the one-time listener
+      if (G._ignoreNextClick) { $('sGame').removeEventListener('click', cont, true); G._ignoreNextClick = false; return; }
+      if (e.target.closest('button') || e.target.closest('#hudBar')) return;
+      $('sGame').removeEventListener('click', cont, true);
+      $('advHint').classList.remove('blink');
+      const nxt = typeof sc.next === 'function' ? sc.next() : sc.next;
+      if (nxt) G.goScene(nxt);
+    };
+    $('sGame').addEventListener('click', cont, true);
   }
 };
 
@@ -1029,7 +1267,11 @@ SCENES.rip_monitor = {
     {char:'ruel', name:'???', text:'n̷̡͝ã̵͔o̴̢̒ ̷̘͌c̸͕͝o̶̡͒n̷̦͌e̷̦͋c̵̙̀t̵̤̀a̸̜͘ ̶̕o̵ ̶ú̴l̵t̸i̸m̵o̶'},
     {char:'system', name:'SISTEMA', text:'[ MINIGAME: CIRCUITO DE PULSOS ]'},
   ],
-  next: () => { G.openMG('wire'); return null; },
+  next: () => {
+    // If wire minigame already completed, skip reopening and go to outcome
+    try { if (G.hasFlag && G.hasFlag('wireDone')) return 'after_wire_good'; } catch(e) {}
+    G.openMG('wire'); return null;
+  },
 };
 
 SCENES.after_wire_good = {
@@ -1049,8 +1291,9 @@ SCENES.after_wire_bad = {
   lines:[
     {char:'ruel', name:'VOZ DISTORCIDA', text:'V̸o̷c̵ê̸ ̶n̶ã̸o̸ ̴d̴e̸v̸i̸a̸.'},
     {char:'narrator', name:'NARRADOR', text:'A porta abre mesmo assim. Mas algo mudou. Uma sensação de que você está sendo observado.'},
+    {char:'narrator', name:'NARRADOR', text:'Você corre instintivamente para o elevador central. Precisa descer. Precisa encontrar respostas.'},
   ],
-  next:'corridor_hub',
+  next:'elevator_descent',
 };
 
 SCENES.corridor_hub = {
@@ -1098,20 +1341,19 @@ SCENES.elev_fail2 = {
     G.glitch(900); G.flashBad();
     if(!G.hasFlag('sawFlash')){
       G.setFlag('sawFlash');
-      // Note: only records that a pattern was seen, NOT the full password
       G.addItem('nota_flash','Nota: Padrão no Monitor','pista',
-        'Você viu um padrão por 0.3 segundos no monitor do elevador.\n\nEra uma sequência de letras e números alternados.\n\nPrecisa descobrir o que significa — procure nos corredores.',['elev_code','corridor_hub']);
+        'Você viu um padrão por 0.3 segundos no monitor do elevador:\n\nR-17-U-04-E-92-L\n\nAinda não sabe o que significa.',['elev_code_try','corridor_hub']);
     }
   },
   lines:[
     {char:'system', name:'TERMINAL', text:'[ DADOS INVÁLIDOS ]'},
     {char:'narrator', name:'NARRADOR', text:'O monitor pisca mais rápido. Por uma fração de segundo — rápido demais para processar — um padrão aparece na tela.'},
-    {char:'narrator', name:'NARRADOR', text:'Depois desaparece. Você mal teve tempo de ler. Parecia... letras e números misturados. Uma sequência.'},
-    {char:()=>G.S.gen==='m'?'player_m':'player_f', name:N, text:'Esse padrão deve estar em algum documento por aqui. Preciso procurar nos corredores.'},
+    {char:'narrator', name:'NARRADOR', text:'Depois desaparece. Você mal teve tempo de ler.'},
+    {char:()=>G.S.gen==='m'?'player_m':'player_f', name:N, text:'R... alguma coisa... preciso descobrir o que significa.'},
   ],
   choices:[
     {text:'Explorar os corredores para descobrir o código.', fn:()=>G.goScene('corridor_hub')},
-    {text:'Tentar adivinhar o padrão (arriscado).', fn:()=>G.openMG('elev_code')},
+    {text:'Tentar digitar o padrão como senha (arriscar).', fn:()=>G.openMG('elev_code')},
   ],
 };
 
@@ -1248,7 +1490,7 @@ SCENES.right_enter = {
 SCENES.right_pc_a = {
   art:'right_room', label:'PC-A — REGISTRO DE PESSOAL', backTo:'right_enter', backLabel:'Voltar',
   lines:[
-    {char:'system', name:'PC-A', text:'REGISTRO DE PESSOAL\n\nRuel Andrade — Analista de Sistemas — ❌ REMOVIDO\nMariana Costa — Gerente — ❌ DESLIGADO\nRafael Barros — Seg. Info — ✅ ATIVO\nJuliana Mendes — CTO — ✅ ATIVO'},
+    {char:'system', name:'PC-A', text:'REGISTRO DE PESSOAL\n\nRuel Andrade — Analista de Sistemas — [X] REMOVIDO\nMariana Costa — Gerente — [X] DESLIGADO\nRafael Barros — Seg. Info — [V] ATIVO\nJuliana Mendes — CTO — [V] ATIVO'},
     {char:'narrator', name:'NARRADOR', text:'O registro de Ruel tem uma nota que os outros não têm:\n"REMOVIDO DO SISTEMA — VER PROTOCOLO 17"\n\nMotivo do desligamento: [EM BRANCO]'},
     {char:'narrator', name:'NARRADOR', text:'Enquanto você lê, o texto pisca por um segundo:\nRUEL → RUEL_?'},
     {char:()=>G.S.gen==='m'?'player_m':'player_f', name:N, text:'O sistema está modificando o registro em tempo real.'},
@@ -1332,9 +1574,13 @@ SCENES.center_cancel = {
   next:'corridor_hub',
 };
 
-// ── DESCIDA ──
+// Salvar passando.mp4 em: c:\Users\ATOS\Desktop\Nexus\NEXUS\passando.mp4
 SCENES.elevator_descent = {
   art:'subsolo', label:'DESCENDO — B-21',
+  effect:()=>{
+    $('advHint').textContent = '[CONTEMPLAÇÃO — clique para continuar a descida]';
+    $('advHint').style.display = 'block';
+  },
   lines:[
     {char:'narrator', name:'NARRADOR', text:'O elevador desce. Devagar. B-1... B-3... B-8... B-12... B-21.'},
     {char:'narrator', name:'NARRADOR', text:'Quinze andares abaixo. Um lugar que não existe em nenhum mapa oficial.'},
@@ -1361,6 +1607,10 @@ SCENES.ruel_approach = {
 
 SCENES.ruel_choice = {
   art:'ruel_room', label:'CÂMARA CENTRAL — DECISÃO',
+  effect:()=>{
+    G.setFlag('visitedSubsolo');
+    G.saveCheckpoint('Visitou subsolo e encontrou Ruel');
+  },
   lines:[
     {char:'ruel', name:'RUEL', text:'Me ajude. Ou me delete. Mas saiba: se me deletar, tudo o que sei vai junto. E se me libertar — a Nexus vai perceber. Vai te encontrar.'},
     {char:'system', name:'SISTEMA', text:'[ DECISÃO CRÍTICA ]'},
@@ -1456,7 +1706,8 @@ SCENES.sus_pass = {
     {char:'narrator', name:'NARRADOR', text:'Ele vai embora. A expressão dele diz que a conversa não terminou.'},
     {char:()=>G.S.gen==='m'?'player_m':'player_f', name:N, text:'Preciso terminar isso rápido.'},
   ],
-  next:'do_final_body',
+  // Se o interrogatório passar, volte ao corredor principal para prosseguir com a investigação
+  next:'corridor_hub',
 };
 
 SCENES.do_final_delete = {
@@ -1498,15 +1749,23 @@ SCENES.do_final_body = {
     {char:'narrator', name:'NARRADOR', text:'O processo levou semanas. O laboratório B-8 tinha tudo — como se alguém tivesse planejado isso há décadas.'},
     {char:'narrator', name:'NARRADOR', text:'No dia que Ruel abriu os olhos — olhos reais — ele ficou em silêncio por um longo tempo.'},
     {char:'ruel', name:'RUEL', text:'Eu esqueci como era... sentir temperatura.'},
-    {char:'narrator', name:'NARRADOR', text:'Publicaram tudo. A Nexus caiu. O escândalo do Apagão foi global.'},
-    {char:'narrator', name:'NARRADOR', text:'Mas o processo de transferência de volta ao físico tem um custo que ninguém calculou completamente.'},
-    {char:'ruel', name:'RUEL', text:'Eu tentei te dizer. O processo é de mão dupla. Para eu voltar ao físico, alguém precisa ocupar o espaço vazio que eu deixo no sistema.'},
+    {char:'narrator', name:'NARRADOR', text:'Publicaram tudo. A Nexus caiu.'},
+    {char:'narrator', name:'NARRADOR', text:'Mas o processo de transferência de volta ao físico tem um custo que ninguém calculou. Um custo que o próprio Ruel tentou avisar.'},
+    {char:'ruel', name:'RUEL', text:'Eu tentei te dizer. O processo é de mão dupla. Para eu voltar ao físico, alguém precisa ocupar o espaço que eu deixo.'},
     {char:()=>G.S.gen==='m'?'player_m':'player_f', name:N, text:'Eu... eu não entendi o que isso significava.'},
-    {char:'narrator', name:'NARRADOR', text:()=>`${N()} sentiu o mundo físico parar de reconhecê-l${G.S.gen==='m'?'o':'a'}. Não como queda. Como dissolução.`},
+    {char:'narrator', name:'NARRADOR', text:()=>`${N()} sentiu o chão sumir.`},
+    {char:'narrator', name:'NARRADOR', text:'Não como queda. Como dissolução.'},
     {char:'ruel', name:'RUEL', text:'Perdoa-me.'},
-    {char:'narrator', name:'NARRADOR', text:()=>`${N()} nunca respondeu.`},
   ],
-  next:()=>{ G.saveMural('corpo','ending'); G.doFinal('corpo'); return null; },
+  next:'morte_corpo_final',
+};
+
+SCENES.morte_corpo_final = {
+  death:{
+    title:'SUBSTITUIÇÃO',
+    body:'Sua consciência foi transferida para o espaço digital.\n\nRuel voltou ao seu corpo — um corpo que nunca possuiu.\n\nVocê não morreu.\n\nVocê se tornou aquilo contra o que lutou.\n\nE ele? Ele respira. Sente temperatura novamente.\n\nE faz um discurso extraordinário denunciando tudo que a Nexus fez.\n\nO mundo o ouve como herói.\n\nNinguém sabe que o preço foi pago por você.',
+    cause:'CAUSA: Sacrifício digital — consciência transferida. Você agora ocupa o espaço que Ruel deixou.'
+  }
 };
 
 // ════════════════════════════════════════════════════════════════
@@ -1517,12 +1776,13 @@ const FINALS = {
   eliminacao:{num:'02',col:'#cc2a2a',tit:'FINAL: PROTOCOLO',body:`Você executou a tarefa.\n\nRuel foi deletado. Cinquenta anos de consciência, apagados. As provas do Apagão, destruídas.\n\nA Nexus mandou um bônus. Seu gestor te parabenizou.\n\nÀs vezes, de madrugada, você ainda ouve cliques.\n\nE pensa no que escolheu apagar.`,tag:'A anomalia foi resolvida.'},
   sacrificio:{num:'03',col:'#c89040',tit:'FINAL: SACRIFÍCIO',body:`A transferência passou por você como uma corrente elétrica.\n\nRuel chegou do outro lado. Livre.\n\nVocê não chegou a lugar nenhum.\n\nTrês semanas depois, um jornalista recebeu um arquivo expondo a Nexus — o Apagão, os contratos, tudo. A empresa foi dissolvida.\n\nNinguém soube quem entregou os dados.`,tag:'Ruel escapou. Você ficou.'},
   verdadeiro:{num:'04',col:'#62a870',tit:'FINAL: ALÉM',body:`Você entrou. Foi como afundar em água fria — desorientante, depois completamente natural.\n\nRuel estava lá. E tudo que ele guardava também.\n\nDe dentro, vocês dois enviaram as provas para cada jornalista, cada regulador, cada vítima do Apagão.\n\nO mundo explodiu com o escândalo.\n\nE em algum servidor, dois sinais pulsam juntos.`,tag:'Ambos digitalizados. Ambos livres.'},
-  corpo:{num:'05',col:'#4a8a54',tit:'FINAL: CORPO',body:`Ruel voltou.\n\nVocê não.\n\nO processo era de mão dupla — para ele retornar ao físico, alguém precisava ocupar o espaço que ele deixava no sistema. Era você.\n\nRuel publicou tudo. A Nexus caiu.\n\nEle deu entrevistas com um rosto que ninguém reconhecia, mas com a memória de um homem que esperou cinquenta anos.\n\nE com a culpa permanente de quem sabe o preço que foi pago.\n\nEm algum servidor no nível B-21, um sinal novo pulsa. Pequeno. Confuso. Ainda aprendendo o que significa existir assim.`,tag:'Ruel voltou. Você ficou no lugar dele.'}
+  corpo:{num:'05',col:'#4a8a54',tit:'FINAL: CORPO',body:`Ruel voltou ao mundo físico.\n\nVocê não.\n\nO processo foi de mão dupla — para ele retornar ao físico, alguém precisava ocupar o espaço vazio que ele deixava. Era você.\n\nRuel publicou tudo. A Nexus caiu. O escândalo do Apagão foi global.\n\nEle deu entrevistas com um rosto que ninguém reconhecia mas com a memória de um homem que esperou décadas.\n\nE com a culpa de quem sabe o preço que foi pago.`,tag:'Ruel voltou. Você ficou no lugar dele.'},
 };
 const DEATH_DATA = [
   {key:'morte_elevador',num:'D1',col:'#cc2a2a',name:'MORTE: QUEDA',desc:'O elevador despencou.'},
   {key:'morte_suspeita',num:'D2',col:'#cc2a2a',name:'MORTE: ELIMINAD',desc:'A suspeita chegou cedo demais.'},
   {key:'morte_boss',num:'D3',col:'#cc2a2a',name:'MORTE: ABSORVID',desc:'Ruel te consumiu.'},
+  {key:'morte_corpo_final',num:'D4',col:'#4a8a54',name:'MORTE: SUBSTITUIÇÃO',desc:'Você ocupou o espaço que Ruel deixou.'},
 ];
 
 G.doFinal = key => {
@@ -1633,9 +1893,12 @@ G.useItem = () => {
   // Context-specific use
   if (item.id === 'pasta_vermelha') {
     G.notify('Pasta Vermelha exibida — código: 170492', 'item');
+    G.showItemCardGame('PASTA VERMELHA', 'Código: 170492\nPadrão: R-17-U-04-E-92-L');
     if (G.S.scene === 'elev_with_code' || G.S.scene === 'elev_first') {
       G.openMG('elev_code');
     }
+  } else {
+    G.showItemCardGame(item.name, item.desc);
   }
 };
 
@@ -1643,6 +1906,11 @@ G.useItem = () => {
 // SECTION 10: MINIGAMES
 // ════════════════════════════════════════════════════════════════
 G.openMG = id => {
+  // Prevent reopening certain minigames if already completed
+  if (id === 'wire' && G.hasFlag && G.hasFlag('wireDone')) {
+    G.notify('Painel de reparo já foi concluído.', 'lore');
+    return;
+  }
   G._curMG = id;
   const MG = MINIGAMES[id];
   if (!MG) return;
@@ -1651,9 +1919,19 @@ G.openMG = id => {
   $('mgBD').innerHTML = '';
   $('mgOv').classList.add('on');
   MG.build($('mgBD'));
+  // Prevent clicks on minigame buttons from bubbling to the global scene click handler
+  setTimeout(()=>{
+    const mgbd = $('mgBD');
+    if(!mgbd) return;
+    mgbd.querySelectorAll('button, .pb, .ts, .ek').forEach(b => {
+      b.addEventListener('click', ev => { ev.stopPropagation(); }, {capture:false});
+    });
+  }, 0);
 };
 
 G.closeMG = () => {
+  // prevent the immediate next global click from advancing scenes
+  G._ignoreNextClick = true;
   $('mgOv').classList.remove('on');
   if (MINIGAMES[G._curMG]?.onClose) MINIGAMES[G._curMG].onClose();
 };
@@ -1662,7 +1940,7 @@ const MINIGAMES = {};
 
 // ── WIRE ──
 MINIGAMES.wire = {
-  title:'CIRCUITO DE PULSOS',
+  title:'PAINEL DE REPARO',
   closable: true,
   WIRES:[
     {id:'A',lbl:'FIO AMARELO',col:'#c89050',spd:.55,name:'Medo'},
@@ -1674,44 +1952,134 @@ MINIGAMES.wire = {
   CORRECT:['A','B','C','D'],
   state:{},
   build(el){
-    const s=this.state={connected:[],selected:null,done:false,errors:0,lastDid:false};
+    const s=this.state={connected:[],selected:null,done:false,errors:0,lastDid:false,video:false};
     el.innerHTML=`
-      <div class="mg-inst">Observe os padrões de pulso de cada fio.<br>Conecte-os nos terminais na <b style="color:#62a870">ordem emocional da memória</b>.<br><span style="color:#cc2a2a">Erros distorcem os padrões. Não conecte o último.</span></div>
-      <div class="wa" id="wArea"></div>
-      <div style="font-size:.5rem;color:#3a6a44;text-align:center;letter-spacing:.1em">TERMINAIS — clique para conectar o fio selecionado:</div>
-      <div class="trow" id="tRow"></div>
-      <div class="lw-w" id="lwW">⚠ "Não conecta o último." — Você ainda pode parar.</div>
-      <div id="lwBtns" style="display:none;gap:.45rem;justify-content:center;flex-wrap:wrap"></div>
-      <div class="mg-st" id="wSt">Selecione um fio para começar.</div>
+      <div style="background:#0d1a12;border-bottom:1px solid #1a3a22;padding:.5rem;text-align:center;font-size:.64rem;letter-spacing:.08em;color:#62a870">[PAINEL DE REPARO] — CONECTE OS FIOS NA ORDEM CORRETA</div>
+      <div id="wireRow" class="wa" style="display:flex;flex-direction:column;gap:.35rem;max-width:480px;margin:.6rem auto"></div>
+      <div style="font-size:.62rem;color:#3a6a44;text-align:center;letter-spacing:.1em;padding:.3rem;background:#06100a">CLIQUE NO FIO E DEPOIS NO TERMINAL desejado</div>
+      <div class="trow" id="tRow" style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;padding:.5rem;background:#05080a;border-top:1px solid #111e14"></div>
+      <div class="lw-w" id="lwW" style="background:#0a1510;border-top:2px solid #cc2a2a;color:#cc2a2a;font-size:.64rem;padding:.6rem;text-align:center;display:none">⚠ ÚLTIMO FIO DETECTADO — Consequências desconhecidas</div>
+      <div id="lwBtns" style="display:none;gap:.45rem;justify-content:center;flex-wrap:wrap;padding:.5rem;background:#060a08"></div>
+      <div class="mg-st" id="wSt" style="text-align:center;padding:.5rem;color:#3a6a44;font-size:.62rem">Sequência esperada: MEDO → CORRIDA → QUEDA → FUGA</div>
+            <canvas id="wirePanel" width="500" height="200" style="border:2px solid #2a5c38;background:#050809;display:block;margin:.2rem auto;border-radius:3px"></canvas>
+
       <div class="mg-res" id="wRes">
         <div class="mg-rl" id="wRL"></div>
         <div class="mg-rm" id="wRM"></div>
         <button class="pb sm" onclick="MINIGAMES.wire.finish()">[ CONTINUAR ]</button>
       </div>`;
-    const wa=$('wArea');
-    this.WIRES.forEach(w=>{
-      const row=document.createElement('div'); row.className='wr';
-      row.innerHTML=`<div class="wl">${w.lbl}</div>
-        <div class="wt" id="wt-${w.id}" style="background:${w.col}1a;border-color:${w.col}55" onclick="MINIGAMES.wire.sel('${w.id}')">
-          <div class="wd" style="background:${w.col};animation-duration:${(1/w.spd).toFixed(2)}s"></div>
-        </div>
-        <div class="wn">${w.name}</div>`;
-      wa.appendChild(row);
-    });
+    const wireRow = $('wireRow');
     const tr=$('tRow');
+    // create clickable wire elements (left side) so user can select wires by clicking
+    this.WIRES.forEach(w => {
+      const wr = document.createElement('div'); wr.className = 'wr'; wr.id = 'wt-' + w.id;
+      wr.style.cssText = 'display:flex;align-items:center;gap:.45rem;margin-bottom:.28rem;cursor:pointer';
+      const wl = document.createElement('div'); wl.className = 'wl'; wl.style.width = '120px'; wl.textContent = w.lbl; wl.style.color = w.col;
+      const wt = document.createElement('div'); wt.className = 'wt'; wt.style.width = '140px'; wt.style.position='relative'; wt.style.border = '1px solid rgba(26,58,34,0.4)'; wt.style.borderRadius='4px'; wt.style.padding='4px'; wt.style.background='rgba(10,16,12,0.3)'; wt.style.color = w.col;
+      const wd = document.createElement('div'); wd.className = 'wd'; wd.style.width='7px'; wd.style.height='15px'; wd.style.position='absolute'; wd.style.top='1.5px'; wd.style.animation='wd 1s steps(16) infinite';
+      wt.appendChild(wd);
+      const wn = document.createElement('div'); wn.className = 'wn'; wn.textContent = w.id; wn.style.width='30px'; wn.style.textAlign='right'; wn.style.color = w.col;
+      wt.addEventListener('click', (ev) => { ev.stopPropagation(); this.sel(w.id); });
+      wr.appendChild(wl); wr.appendChild(wt); wr.appendChild(wn);
+      wireRow.appendChild(wr);
+    });
     for(let i=0;i<4;i++){
       const sl=document.createElement('div'); sl.className='ts'; sl.id='ts'+i;
+      sl.style.cssText='border:3px solid #1a3a22;border-radius:3px;min-width:70px;line-height:2;font-size:.8rem;font-weight:bold;transition:.15s;cursor:pointer';
       sl.textContent=(i+1)+''; sl.onclick=()=>this.connectSlot(i); tr.appendChild(sl);
     }
+    this.drawPanel();
+  },
+  drawPanel(){
+    const cv = $('wirePanel');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    
+    // Clear
+    ctx.fillStyle = '#050809';
+    ctx.fillRect(0,0,W,H);
+    
+    // Position constants
+    const wireX = 50;      // x coordinate for wire endpoints
+    const terminalX = W - 50;  // x coordinate for terminal dots
+    const startY = 50;     // starting Y
+    const spacing = 30;    // spacing between each
+    
+    // Headers
+    ctx.fillStyle = '#3a6a44';
+    ctx.font = 'bold 11px Arial';
+    ctx.fillText('FIOS', 10, 22);
+    ctx.fillText('TERMINAIS', W-100, 22);
+    
+    // Draw wire stubs on LEFT
+    this.WIRES.forEach((w, i) => {
+      const y = startY + i * spacing;
+      // Wire color stub
+      ctx.strokeStyle = w.col;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(wireX - 20, y);
+      ctx.lineTo(wireX, y);
+      ctx.stroke();
+      // Wire label
+      ctx.fillStyle = w.col;
+      ctx.font = 'bold 10px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText(w.name.slice(0,3).toUpperCase(), wireX - 25, y + 4);
+      ctx.textAlign = 'left';
+    });
+    
+    // Draw terminal dots on RIGHT
+    for(let i = 0; i < 4; i++){
+      const y = startY + i * spacing;
+      ctx.fillStyle = '#2a5c38';
+      ctx.beginPath();
+      ctx.arc(terminalX, y, 8, 0, Math.PI*2);
+      ctx.fill();
+      // Terminal number
+      ctx.fillStyle = '#62a870';
+      ctx.font = 'bold 12px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText((i+1), terminalX, y + 5);
+      ctx.textAlign = 'left';
+    }
+    
+    // Draw connection LINES for connected wires
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([4,4]);
+    this.state.connected.forEach((wid, idx) => {
+      const w = this.WIRES.find(x => x.id === wid);
+      const wireIdx = this.WIRES.indexOf(w);
+      const y1 = startY + wireIdx * spacing;
+      const y2 = startY + idx * spacing;
+      
+      ctx.strokeStyle = w.col;
+      ctx.beginPath();
+      ctx.moveTo(wireX, y1);
+      // Quadratic curve to terminal
+      ctx.quadraticCurveTo(W/2, (y1+y2)/2, terminalX, y2);
+      ctx.stroke();
+      
+      // Draw ending circle on terminal
+      ctx.fillStyle = w.col;
+      ctx.beginPath();
+      ctx.arc(terminalX, y2, 5, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.setLineDash([]);
   },
   sel(id){
     const s=this.state; if(s.done||s.connected.includes(id)) return;
     if(id==='E'){$('lwW').style.display='block';$('lwBtns').style.display='flex';
       $('lwBtns').innerHTML=`<button class="pb sm r" onclick="MINIGAMES.wire.doLast(true)">Conectar mesmo assim</button><button class="pb sm" onclick="MINIGAMES.wire.doLast(false)">Não conectar</button>`;
-      $('wSt').textContent=''; return;}
+      $('wSt').innerHTML='<span style="color:#c89040">⚠ Você selecionou o FIOLIMO — Esse não deveria ser conectado...</span>'; return;}
     s.selected=id;
-    this.WIRES.forEach(w=>{const el=$('wt-'+w.id);if(el)el.classList.toggle('sel',w.id===id);});
-    $('wSt').innerHTML=`Selecionado: <b>${this.WIRES.find(w=>w.id===id).lbl}</b> — clique num terminal.`;
+    // update DOM selection visuals
+    this.WIRES.forEach(w=>{const container=$('wt-'+w.id); if(container){const wtEl=container.querySelector('.wt'); if(w.id===id){wtEl.classList.add('sel'); wtEl.style.outline=`2px solid ${w.col}`;} else {wtEl.classList.remove('sel'); wtEl.style.outline='';}}});
+    const w = this.WIRES.find(x => x.id === id);
+    $('wSt').innerHTML=`<span style="color:${w.col}">Selecionado: ${w.lbl} (${w.name})</span> — clique num terminal para conectar.`;
+    this.drawPanel();
   },
   connectSlot(idx){
     const s=this.state; if(!s.selected||s.done) return;
@@ -1725,20 +2093,61 @@ MINIGAMES.wire = {
     } else {G.flashGood();$('wSt').innerHTML=`<span style="color:#62a870">✓ ${w.lbl} conectado.</span>`;}
     s.connected.push(wid); s.selected=null;
     this.WIRES.forEach(w=>{const el=$('wt-'+w.id);if(el)el.classList.remove('sel');});
+    this.drawPanel();
     if(s.connected.length===4){$('lwW').style.display='block';$('lwBtns').style.display='flex';
-      $('lwBtns').innerHTML=`<button class="pb sm r" onclick="MINIGAMES.wire.doLast(true)">Conectar último fio</button><button class="pb sm" onclick="MINIGAMES.wire.doLast(false)">Não conectar</button>`;}
+      $('lwBtns').innerHTML=`<button class="pb sm r" onclick="MINIGAMES.wire.doLast(true)">Conectar último fio (RISCO)</button><button class="pb sm" onclick="MINIGAMES.wire.doLast(false)">Não conectar</button>`;}
   },
   doLast(connect){
-    $('lwW').style.display='none';$('lwBtns').style.display='none';
-    this.state.done=true; this.state.lastDid=connect;
+    $('lwW').style.display='none';
+    $('lwBtns').style.display='none';
+    this.state.done=true;
+    this.state.lastDid=connect;
     const rl=$('wRL'),rm=$('wRM'),res=$('wRes');
-    if(connect){rl.className='mg-rl lose';rl.textContent='SISTEMA REINICIADO';
-      rm.textContent='Você conectou o último fio. Algo assumiu o controle.';G.glitch(3000);G.flashBad();G.S.flags.connectedLast=true;}
-    else{rl.className='mg-rl win';rl.textContent='SINCRONIZAÇÃO ESTÁVEL';
-      rm.textContent='Você respeitou o aviso. A porta abre devagar.';G.flashGood();}
-    res.classList.add('on');
+    if(connect){
+      rl.className='mg-rl lose';
+      rl.textContent='SOBRECARGA DETECTADA';
+      rm.innerHTML='Você conectou o último fio.<br>A consciência invadiu o terminal.<br>Algo assume o controle...';
+      G.glitch(2000);
+      G.flashBad();
+      G.S.flags.connectedLast=true;
+      this.state.video = true;
+      // Mostrar video do acontecido
+      this.showVideoEffect(() => res.classList.add('on'));
+    } else {
+      rl.className='mg-rl win';
+      rl.textContent='SINCRONIZAÇÃO ESTÁVEL';
+      rm.innerHTML='Você respeitou o aviso.<br>A porta abre devagar.<br>O corredor à frente aguarda...';
+      G.flashGood();
+      this.drawPanel();
+      res.classList.add('on');
+    }
   },
-  finish(){$('mgOv').classList.remove('on');G.goScene(this.state.lastDid?'after_wire_bad':'after_wire_good');},
+  showVideoEffect(callback){
+    const effect = document.createElement('div');
+    effect.id = 'wireVideoEffect';
+    effect.style.cssText = 'position:fixed;inset:0;z-index:6000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.95)';
+    const video = document.createElement('video');
+    video.src = 'passando.mp4';
+    video.style.cssText = 'max-width:90vw;max-height:90vh;border:2px solid #62a870;box-shadow:0 0 20px rgba(98,168,112,.5)';
+    video.autoplay = true;
+    video.onended = () => {
+      effect.remove();
+      if (callback) callback();
+    };
+    effect.appendChild(video);
+    document.body.appendChild(effect);
+  },
+  finish(){
+    // Remove video effect if still present
+    const videoEffect = $('wireVideoEffect');
+    if (videoEffect) videoEffect.remove();
+    // Close minigame and advance scene
+    // mark as completed to avoid reopening
+    if (G.setFlag) G.setFlag('wireDone');
+    G._ignoreNextClick = true;
+    $('mgOv').classList.remove('on');
+    G.goScene(this.state.lastDid?'after_wire_bad':'after_wire_good');
+  },
 };
 
 // ── ELEVATOR CODE ──
@@ -1749,14 +2158,13 @@ MINIGAMES.elev_code = {
   state:{},
   build(el){
     const hasPasta=G.hasItem('pasta_vermelha');
-    // Show pasta as side card if available
-    if(hasPasta) G.showItemCard('📁 PASTA VERMELHA','Código: 170492\nPadrão: R-17-U-04-E-92-L');
     const s=this.state={input:'',attempts:0,MAX:5};
     el.innerHTML=`
-      <div class="mg-inst">${hasPasta?'<span style="color:#62a870">✓ Pasta Vermelha no inventário — confira o card na tela.</span>':'Você precisa do código. Explore os corredores primeiro.'}<br><span style="color:#cc2a2a">5 tentativas. Falhar = o elevador despenca e você morre.</span></div>
+      <div class="mg-inst">${hasPasta?'<span style="color:#62a870">Pasta Vermelha: código 170492</span>':'Você precisa do código. Explore os corredores.'}<br><span style="color:#cc2a2a">5 tentativas. Falhar = o elevador despenca.</span></div>
+      ${hasPasta?'<div style="background:#06100a;border:1px solid #2a5c38;padding:.4rem .7rem;font-size:.58rem;color:#62a870;letter-spacing:.06em">[PASTA VERMELHA]:<br>CÓDIGO: 170492<br>PADRÃO: R-17-U-04-E-92-L<br><br><span style="color:#c89040">Destino: B-21</span></div>':''}
       <div class="edsp" id="edD">_ _ _ _ _ _</div>
       <div class="epad" id="edP"></div>
-      <div class="mg-st" id="edS">Tentativas restantes: <b>${s.MAX}</b></div>
+      <div class="mg-st" id="edS">Tentativas: <b>${s.MAX}</b></div>
       <div class="mg-res" id="edR">
         <div class="mg-rl" id="edRL"></div>
         <div class="mg-rm" id="edRM"></div>
@@ -1764,7 +2172,7 @@ MINIGAMES.elev_code = {
       </div>
       <div style="text-align:center;margin-top:.5rem"><button class="pb sm" onclick="G.closeMG();G.goScene('corridor_hub')">← Voltar (desistir)</button></div>`;
     const pad=$('edP');
-    [1,2,3,4,5,6,7,8,9,'C',0,'✓'].forEach(k=>{
+    [1,2,3,4,5,6,7,8,9,'C',0,'OK'].forEach(k=>{
       const b=document.createElement('button');b.className='ek';b.textContent=k;
       b.onclick=()=>this.press(k);pad.appendChild(b);
     });
@@ -1772,7 +2180,7 @@ MINIGAMES.elev_code = {
   press(k){
     const s=this.state;
     if(k==='C'){s.input='';this.upd();return;}
-    if(k==='✓'){this.submit();return;}
+    if(k==='OK' || k==='✓'){this.submit();return;}
     if(s.input.length>=6) return;
     s.input+=k;this.upd();
   },
@@ -1785,7 +2193,18 @@ MINIGAMES.elev_code = {
       G.setFlag('elevUnlocked');G.save?.();G.flashGood();
       $('edD').style.borderColor='#3a8a48';$('edD').style.color='#62a870';
       $('edR').classList.add('on');$('edRL').className='mg-rl win';$('edRL').textContent='ACESSO CONCEDIDO';
-      $('edRM').textContent='O elevador destrava e começa a descer lentamente.';
+      $('edRM').innerHTML='<div>O elevador destrava. Escolha o andar:</div>';
+      const btns = document.createElement('div');
+      btns.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:1rem';
+      ['B-1','B-3','B-8','B-12','B-21','EMERGÊNCIA'].forEach(fl=>{
+        const btn = document.createElement('button');
+        btn.className = 'pb sm';
+        btn.textContent = fl;
+        if(fl==='EMERGÊNCIA') btn.style.cssText = 'grid-column:1/-1;background:#8a2020';
+        btn.onclick = () => this.selectFloor(fl);
+        btns.appendChild(btn);
+      });
+      $('edRM').appendChild(btns);
     } else {
       G.glitch(700);G.flashBad();G.setSync(G.S.sync-10);
       if(rem<=0){
@@ -1801,7 +2220,20 @@ MINIGAMES.elev_code = {
       }
     }
   },
-  finish(){$('mgOv').classList.remove('on');G.goScene('elevator_descent');},
+  selectFloor(floor){
+    if(floor==='B-21'){
+      G.flashGood();
+      $('edRM').innerHTML = '<div style="color:#62a870">Descendo para B-21...</div>';
+      setTimeout(()=>this.finish(),1000);
+    } else if(floor==='EMERGÊNCIA'){
+      G.closeMG();
+      G.goScene('corridor_hub');
+    } else {
+      G.notify('Não é pra onde eu devo ir.','item');
+      G.flashBad();
+    }
+  },
+  finish(){G._ignoreNextClick=true;$('mgOv').classList.remove('on');G.goScene('elevator_descent');},
 };
 MINIGAMES.elev_code_try = MINIGAMES.elev_code;
 
@@ -1813,12 +2245,11 @@ MINIGAMES.pc_login = {
   state:{},
   build(el){
     const s=this.state={att:0,MAX:7};
-    const hP=G.hasItem('pasta_vermelha');
-    // Show pasta card on scene if available
-    if(hP) G.showItemCard('📁 PASTA VERMELHA','Usuário: RUEL\nSenha: R-17-U-04-E-92-L');
+    const hP=G.hasItem('pasta_vermelha'), hF=G.hasFlag('sawFlash');
     el.innerHTML=`
-      <div class="mg-inst">Encontre as credenciais para acessar o PC-3.<br><span style="color:#cc2a2a">7 tentativas antes do bloqueio permanente.</span><br>${hP?'<span style="color:#62a870">✓ Pasta Vermelha está no inventário — confira na tela.</span>':'Procure pistas no ambiente para descobrir usuário e senha.'}</div>
-      <button class="pb sm" style="margin-bottom:.3rem" onclick="MINIGAMES.pc_login.showHints()">🔍 Examinar outros PCs da sala</button>
+      <div class="mg-inst">Credenciais corretas para acessar o PC-3.<br><span style="color:#cc2a2a">7 tentativas — depois bloqueia.</span></div>
+      ${hP?'<div style="background:#06100a;border:1px solid #2a5c38;padding:.4rem .7rem;font-size:.58rem;color:#62a870">[PASTA VERMELHA]:<br>Usuário: RUEL<br>Senha: R-17-U-04-E-92-L</div>':hF?'<div style="font-size:.52rem;color:#c89040;border:1px solid #5a4010;padding:.35rem .6rem">[DICA] Flash do monitor: R-17-U-04-E-92-L (possível senha)</div>':'<div style="font-size:.52rem;color:#3a6a44;padding:.35rem .6rem">Procure pistas nos PCs e documentos da sala.</div>'}
+      <button class="pb sm" style="margin-bottom:.3rem" onclick="MINIGAMES.pc_login.showHints()">[EXAMINAR] Outros PCs</button>
       <div class="pcterm" id="pcT"></div>
       <div class="pc-ir">
         <span class="pc-pr">LOGIN&gt;</span>
@@ -1829,7 +2260,7 @@ MINIGAMES.pc_login = {
         <input class="pc-in" id="pcPa" type="password" placeholder="senha..." spellcheck="false" autocomplete="off">
       </div>
       <button class="pb sm g" style="margin-top:.3rem" onclick="MINIGAMES.pc_login.submit()">[ ENTRAR ]</button>
-      <div class="mg-st" id="pcS">Tentativas restantes: <b>${s.MAX}</b></div>
+      <div class="mg-st" id="pcS">Tentativas: <b>${s.MAX}</b></div>
       <div class="mg-res" id="pcR">
         <div class="mg-rl" id="pcRL"></div>
         <div class="mg-rm" id="pcRM"></div>
@@ -1838,7 +2269,7 @@ MINIGAMES.pc_login = {
     this.term=$('pcT');
     this.log('NEXUS LEGACY SYSTEM v2.1');
     this.log('Último acesso: [DATA CORROMPIDA]');
-    this.log('Tentativas de login falhas registradas: 12');
+    this.log('Falhas registradas: 12');
     $('pcPa').addEventListener('keydown',e=>{if(e.key==='Enter')this.submit();});
   },
   log(t,col='#00cc00'){const p=document.createElement('p');p.style.color=col;p.textContent=t;this.term.appendChild(p);this.term.scrollTop=9999;},
@@ -1850,7 +2281,7 @@ MINIGAMES.pc_login = {
     this.log('PC-5: loop infinito.','#336633');
     this.log('PC-6: post-it → "não esquecer PASTA VERMELHA"','#8a6600');
     this.log('Log de acesso: último login = RUEL, falhas = 12','#8a6600');
-    if(G.hasItem('pasta_vermelha')){this.log('[PASTA VERMELHA encontrada] — confira no inventário ou no card na tela.','#3a8a48');}
+    if(G.hasItem('pasta_vermelha')){this.log('PASTA VERMELHA encontrada: usuário RUEL, senha R-17-U-04-E-92-L','#3a8a48');}
     else{this.log('[DICA] Procure a pasta vermelha na gaveta do fundo.','#5a4010');}
   },
   submit(){
@@ -1872,7 +2303,7 @@ MINIGAMES.pc_login = {
       else $('pcS').innerHTML=`Tentativas restantes: <b>${rem}</b>`;
     }
   },
-  finish(){$('mgOv').classList.remove('on');G.goScene('after_pc_login');},
+  finish(){G._ignoreNextClick=true;$('mgOv').classList.remove('on');G.goScene('after_pc_login');},
 };
 
 // ── FIND PLUG ──
@@ -1882,7 +2313,7 @@ MINIGAMES.find_plug = {
   ANSWER: 14,
   build(el){
     let found=false;
-    const ICONS=['💧','🔩','📦','🧤','🔦','📎','🗑️','🔧','📦','🧰','🔌','🧱','📼','🔋','🔌','🪛','📦','🧤','🔩','💧','🪜','🔦','📎','🧱'];
+    const ICONS=['[AGUA]','[PORCA]','[CAIXA]','[LUVA]','[LANTERNA]','[CLIPE]','[LIXO]','[CHAVE]','[CAIXA]','[KIT]','[TOMADA]','[TIJOLO]','[FITA]','[BATERIA]','[TOMADA]','[PARAF]','[CAIXA]','[LUVA]','[PORCA]','[AGUA]','[MARTELO]','[LANTERNA]','[CLIPE]','[TIJOLO]'];
     el.innerHTML=`<div class="mg-inst">Escuro total — use o celular para iluminar.<br>Clique nas células para investigar. Encontre a tomada.</div>
       <div class="pgrid" id="pgrid"></div>
       <div class="mg-st" id="pgSt">Procurando...</div>
@@ -1903,7 +2334,7 @@ MINIGAMES.find_plug = {
       grid.appendChild(c);
     }
   },
-  finish(){$('mgOv').classList.remove('on');G.goScene('center_powered');},
+  finish(){G._ignoreNextClick=true;$('mgOv').classList.remove('on');G.goScene('center_powered');},
 };
 
 // ── SAVE SELECT ──
@@ -1977,7 +2408,7 @@ MINIGAMES.save_select = {
     if(s.includes('logs'))G.addLore('sys_logs','Logs do Sistema','"processo_não_identificado: 847TB"\n"atividade neural anômala: detectada"\n\nO sistema sabia. Nunca reportou.');
     $('svRes').classList.add('on');
   },
-  finish(){$('mgOv').classList.remove('on');G.goScene('corridor_hub');},
+  finish(){G._ignoreNextClick=true;$('mgOv').classList.remove('on');G.goScene('corridor_hub');},
 };
 
 // ── BOSS FIGHT ──
@@ -1985,230 +2416,234 @@ MINIGAMES.boss = {
   title:'',
   closable: false,
   ACTIONS:[
-    {key:'a',name:'ANALISAR',desc:'Estuda Ruel. Próximo ataque causa +50% dano.',col:'#c89040',icon:'🔍'},
-    {key:'d',name:'DESCONECTAR',desc:'Força desconexão de memória. 25–45 dano.',col:'#62a870',icon:'⚡'},
-    {key:'f',name:'FRAGMENTAR',desc:'Divide a consciência. 35–60 dano (você toma 15).',col:'#cc2a2a',icon:'💥'},
-    {key:'h',name:'SINCRONIZAR',desc:'Recupera 20 HP e ativa escudo contra próximo ataque.',col:'#3a8a48',icon:'🛡'},
+    {key:'a',name:'ANALISAR',desc:'+50% próximo ataque',col:'#c89040'},
+    {key:'d',name:'DESCONECTAR',desc:'25–45 dano',col:'#62a870'},
+    {key:'f',name:'FRAGMENTAR',desc:'35–60 dano / você toma 15',col:'#cc2a2a'},
+    {key:'h',name:'SINCRONIZAR',desc:'+20 HP + escudo',col:'#3a8a48'},
   ],
   RUEL:[
-    {name:'MEMÓRIA INVASIVA',d:[15,30],msg:'Ruel invade sua mente com 50 anos de solidão.',icon:'👁'},
-    {name:'CORRUPÇÃO DE DADOS',d:[20,35],msg:'Seus processos cognitivos foram corrompidos.',icon:'⚠'},
-    {name:'LOOP DE CONSCIÊNCIA',d:[10,20],msg:'Você fica presa num loop de memória.',icon:'🔄'},
-    {name:'PULSO DIGITAL',d:[25,40],msg:'Um pulso de energia pura varre sua mente.',icon:'📡'},
-    {name:'ISOLAMENTO',d:[18,28],msg:'Ruel corta sua conexão com a realidade.',icon:'🔇'},
+    {name:'MEMÓRIA INVASIVA',d:[15,30],msg:'Ruel invade sua mente com 50 anos de solidão.'},
+    {name:'CORRUPÇÃO',d:[20,35],msg:'Seus processos foram corrompidos.'},
+    {name:'LOOP',d:[10,20],msg:'Você fica presa num loop de memória.'},
+    {name:'PULSO DIGITAL',d:[25,40],msg:'Um pulso de energia pura.'},
   ],
   state:{},
+  _dmgNums:[], // floating damage numbers
+  _shake:0,    // frames of screen shake remaining
+  _bgImg:null,
+  _bgLoaded:false,
   build(el){
-    const titles={delete:'RESISTÊNCIA DE CONSCIÊNCIA',transfer:'FIREWALL DE CONSCIÊNCIA',merge:'SINCRONIZAÇÃO TOTAL',body:'PREPARAÇÃO DO PROTOCOLO'};
+    const titles={delete:'RESISTÊNCIA DE CONSCIÊNCIA',transfer:'FIREWALL',merge:'SINCRONIZAÇÃO TOTAL',body:'PREPARAÇÃO'};
     $('mgHT').textContent = titles[G.S.path]||'CONFRONTO';
-    const s=this.state={php:100,rhp:150,turn:'player',done:false,analyzed:false,shielded:false,round:1};
+    const s=this.state={php:100,rhp:150,turn:'player',done:false,analyzed:false,shielded:false};
+    this._dmgNums=[];this._shake=0;
     el.innerHTML=`
-<style>
-.boss-field{width:min(500px,94vw);background:#020308;border:1px solid #1a3a22;position:relative;height:160px;overflow:hidden}
-.boss-enemy-zone{position:absolute;right:40px;top:15px;width:100px;text-align:center}
-.boss-player-zone{position:absolute;left:40px;bottom:15px;width:100px;text-align:center}
-.boss-sprite{font-size:2.8rem;line-height:1;display:block}
-.boss-sprite-lbl{font-size:.44rem;color:#3a6a44;letter-spacing:.1em;margin-top:2px}
-.boss-hpbar-wrap{margin-top:3px}
-.boss-hpbar-track{height:7px;background:#0a0a0a;border:1px solid #1a2a1a;width:100%}
-.boss-hpbar-fill{height:100%;transition:width .3s steps(10)}
-.boss-hpval{font-size:.42rem;color:#3a6a44;text-align:right;margin-top:1px}
-.boss-turn-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.55rem;letter-spacing:.15em;padding:.2rem .6rem;border:1px solid;text-align:center;pointer-events:none}
-.boss-turn-banner.player{border-color:#2a6a38;color:#62a870;background:rgba(0,20,10,.8)}
-.boss-turn-banner.enemy{border-color:#6a1515;color:#cc2a2a;background:rgba(20,0,0,.8)}
-.boss-effects{position:absolute;inset:0;pointer-events:none}
-.boss-menu{width:min(500px,94vw);background:#06100a;border:1px solid #1a3a22;border-top:none}
-.boss-menu-top{background:#0a1810;border-bottom:1px solid #111e14;padding:.28rem .6rem;font-size:.46rem;color:#3a6a44;letter-spacing:.1em;display:flex;justify-content:space-between}
-.boss-menu-top b{color:#7abf84}
-.boss-acts-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid #111e14}
-.boss-act{background:#06100a;border:none;border-right:1px solid #111e14;border-bottom:1px solid #111e14;color:#7abf84;padding:.4rem .6rem;text-align:left;font-family:'Courier New',monospace;font-size:.6rem;cursor:pointer;display:flex;align-items:center;gap:.35rem;transition:none}
-.boss-act:nth-child(even){border-right:none}
-.boss-act:nth-child(n+3){border-bottom:none}
-.boss-act:hover:not(:disabled){background:#0d1a10;color:#8ad094}
-.boss-act:disabled{opacity:.35;cursor:not-allowed}
-.boss-act .act-icon{font-size:.9rem;flex-shrink:0}
-.boss-act .act-info{display:flex;flex-direction:column}
-.boss-act .act-name{font-size:.58rem;letter-spacing:.06em}
-.boss-act .act-desc{font-size:.44rem;color:#3a6a44;margin-top:1px}
-.boss-log{background:#050809;border-top:1px solid #0d1e12;font-size:.54rem;padding:.32rem .6rem;height:60px;overflow-y:auto;line-height:1.65;scrollbar-width:thin;scrollbar-color:#1a3a22 #050809}
-.boss-log p{margin:0}
-</style>
-<div class="boss-field" id="bField">
-  <div class="boss-enemy-zone">
-    <span class="boss-sprite" id="bEnemySprite">👾</span>
-    <div class="boss-sprite-lbl">RUEL</div>
-    <div class="boss-hpbar-wrap">
-      <div class="boss-hpbar-track"><div class="boss-hpbar-fill" id="bRH" style="width:100%;background:#8a2020"></div></div>
-      <div class="boss-hpval" id="bRHV">150 / 150</div>
-    </div>
-  </div>
-  <div class="boss-player-zone">
-    <span class="boss-sprite" id="bPlayerSprite">${G.S.gen==='m'?'🧑‍💻':'👩‍💻'}</span>
-    <div class="boss-sprite-lbl" id="bPlayerLbl">${G.S.name.toUpperCase()}</div>
-    <div class="boss-hpbar-wrap">
-      <div class="boss-hpbar-track"><div class="boss-hpbar-fill" id="bPH" style="width:100%;background:#2a8a40"></div></div>
-      <div class="boss-hpval" id="bPHV">100 / 100</div>
-    </div>
-  </div>
-  <div class="boss-turn-banner player" id="bTurnBanner">SUA VEZ</div>
-  <canvas class="boss-effects" id="bossCV" width="500" height="160"></canvas>
-</div>
-<div class="boss-menu">
-  <div class="boss-menu-top">
-    <span>ROUND <b id="bRound">1</b></span>
-    <span id="bStatusLbl">Escolha uma ação</span>
-  </div>
-  <div class="boss-acts-grid" id="bActs"></div>
-  <div class="boss-log" id="bLog"></div>
-</div>
-<div class="mg-res" id="bRes" style="margin-top:.5rem">
-  <div class="mg-rl" id="bRL"></div>
-  <div class="mg-rm" id="bRM"></div>
-  <button class="pb sm" onclick="MINIGAMES.boss.finish()">[ CONTINUAR ]</button>
-</div>`;
+      <div style="position:relative;width:min(580px,96vw);margin:0 auto">
+        <!-- HUD de HP sobre a imagem -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:.3rem .5rem;background:#06100a;border:1px solid #1a3a22;border-bottom:none">
+          <div style="flex:1;margin-right:.6rem">
+            <div style="font-size:.56rem;color:#62a870;letter-spacing:.12em;margin-bottom:.18rem">VOCÊ</div>
+            <div style="height:8px;background:#06100a;border:1px solid #1a3a22;border-radius:2px;overflow:hidden"><div id="bPH" style="height:100%;width:100%;background:linear-gradient(90deg,#2a7a38,#62a870);transition:width .3s steps(10)"></div></div>
+            <div id="bPHV" style="font-size:.52rem;color:#3a6a44;text-align:left;margin-top:.1rem">100/100</div>
+          </div>
+          <div style="flex:1;margin-left:.6rem;text-align:right">
+            <div style="font-size:.56rem;color:#cc2a2a;letter-spacing:.12em;margin-bottom:.18rem">RUEL</div>
+            <div style="height:8px;background:#06100a;border:1px solid #6a1515;border-radius:2px;overflow:hidden"><div id="bRH" style="height:100%;width:100%;background:linear-gradient(90deg,#8a1515,#cc2a2a);transition:width .3s steps(10);float:right"></div></div>
+            <div id="bRHV" style="font-size:.52rem;color:#6a1515;text-align:right;margin-top:.1rem">150/150</div>
+          </div>
+        </div>
+        <!-- Canvas principal com imagem de fundo -->
+        <div style="position:relative;overflow:hidden;border:1px solid #1a3a22">
+          <canvas id="bossCV" style="display:block;width:100%;image-rendering:pixelated"></canvas>
+        </div>
+        <!-- Turno & ações -->
+        <div style="background:#060e0a;border:1px solid #1a3a22;border-top:none;padding:.4rem .5rem">
+          <div id="bTurnLbl" style="font-size:.58rem;color:#3a6a44;letter-spacing:.1em;text-align:center;margin-bottom:.3rem">SUA VEZ — escolha uma ação:</div>
+          <div class="bacts" id="bActs" style="display:flex;gap:.3rem;flex-wrap:wrap;justify-content:center"></div>
+        </div>
+        <!-- Log de batalha -->
+        <div class="blog" id="bLog" style="background:#050809;border:1px solid #0d1e12;border-top:none;font-size:.68rem;padding:.35rem .55rem;height:64px;overflow-y:auto;line-height:1.7"></div>
+      </div>
+      <div class="mg-res" id="bRes" style="margin-top:.5rem">
+        <div class="mg-rl" id="bRL"></div>
+        <div class="mg-rm" id="bRM"></div>
+        <button class="pb sm" onclick="MINIGAMES.boss.finish()">[ CONTINUAR ]</button>
+      </div>`;
+    // Configurar canvas responsivo
+    const cv=$('bossCV');
+    cv.width=580;cv.height=240;
+    // Carregar boss-bg.png sem suprimir erros (usuário foi orientado a salvar o arquivo)
+    this._bgLoaded=false;
+    const img=new Image();
+    img.onload=()=>{this._bgImg=img;this._bgLoaded=true;};
+    img.onerror=()=>{this._bgImg=null;this._bgLoaded=false;};
+    img.src='boss-bg.png';
+    this._bgImg=img;
     this.renderActs();
-    this.animFX();
-    this.log('O confronto começa.','bln');
-    this.log(`${G.S.name} enfrenta 50 anos de consciência digital.`,'bln');
+    this.anim();
+    this.log('O confronto começa. 50 anos de consciência digital contra você.','bln');
   },
-  log(msg,cls='bln'){
-    const log=$('bLog');if(!log)return;
-    const p=document.createElement('p');p.className=cls;p.textContent=msg;
-    log.appendChild(p);log.scrollTop=9999;
-  },
+  log(msg,cls='bln'){const log=$('bLog');if(!log)return;const p=document.createElement('p');p.className=cls;p.textContent=msg;log.appendChild(p);log.scrollTop=9999;},
   upd(){
     const s=this.state;
-    $('bPH').style.width=Math.max(0,s.php)+'%';
-    $('bRH').style.width=Math.max(0,s.rhp/1.5)+'%';
-    $('bPHV').textContent=Math.max(0,Math.round(s.php))+' / 100';
-    $('bRHV').textContent=Math.max(0,Math.round(s.rhp))+' / 150';
-    // colour shift on low HP
-    $('bPH').style.background=s.php>50?'#2a8a40':s.php>25?'#8a7020':'#8a2020';
+    const pp=Math.max(0,s.php);
+    const rp=Math.max(0,s.rhp);
+    $('bPH').style.width=pp+'%';
+    $('bRH').style.width=(rp/150*100)+'%';
+    $('bPHV').textContent=Math.round(pp)+'/100';
+    $('bRHV').textContent=Math.round(rp)+'/150';
+  },
+  // Spawna número de dano flutuante no canvas
+  spawnDmg(val,isPlayer){
+    const cv=$('bossCV');if(!cv)return;
+    const x=isPlayer?(cv.width*.18+Math.random()*60):(cv.width*.62+Math.random()*80);
+    const y=isPlayer?(cv.height*.55):(cv.height*.35);
+    this._dmgNums.push({x,y,vy:-1.8,alpha:1,val:'-'+val,col:isPlayer?'#cc2a2a':'#62a870',size:isPlayer?22:20});
+  },
+  spawnHeal(val){
+    const cv=$('bossCV');if(!cv)return;
+    this._dmgNums.push({x:cv.width*.18+Math.random()*60,y:cv.height*.55,vy:-1.8,alpha:1,val:'+'+val,col:'#62a870',size:20});
   },
   renderActs(){
     const area=$('bActs');if(!area)return;area.innerHTML='';
     const s=this.state;
-    const enabled=s.turn==='player'&&!s.done;
-    const banner=$('bTurnBanner');
-    if(banner){
-      banner.textContent=s.done?'FIM':s.turn==='player'?'SUA VEZ':'VEZ DE RUEL';
-      banner.className='boss-turn-banner '+(s.turn==='player'?'player':'enemy');
+    if(s.turn!=='player'||s.done){
+      $('bTurnLbl').textContent=s.done?'':'\u23F3 VEZ DE RUEL — aguarde...';
+      $('bTurnLbl').style.color=s.done?'#3a6a44':'#cc2a2a';
+      return;
     }
-    const status=$('bStatusLbl');
-    if(status) status.textContent=enabled?'Escolha uma ação':s.done?'—':'Aguarde...';
+    $('bTurnLbl').textContent='SUA VEZ — escolha uma ação:';
+    $('bTurnLbl').style.color='#62a870';
     this.ACTIONS.forEach(a=>{
-      const b=document.createElement('button');b.className='boss-act';
-      b.disabled=!enabled;
-      b.innerHTML=`<span class="act-icon">${a.icon}</span><span class="act-info"><span class="act-name" style="color:${a.col}">${a.name}</span><span class="act-desc">${a.desc}</span></span>`;
-      b.onclick=()=>{ if(enabled) this.act(a); };
+      const b=document.createElement('button');b.className='pb sm';
+      b.style.cssText=`border-color:${a.col};color:${a.col};min-width:110px`;
+      b.innerHTML=`${a.name}<br><span style="font-size:.52rem;opacity:.7;color:${a.col}">${a.desc}</span>`;
+      b.onclick=()=>this.act(a);
       area.appendChild(b);
     });
-    if($('bRound')) $('bRound').textContent=s.round;
   },
   act(a){
     const s=this.state;if(s.turn!=='player'||s.done)return;
     s.turn='ruel';this.renderActs();
-    let msg='';
     if(a.key==='a'){
       s.analyzed=true;
-      msg=`🔍 ANALISAR — próximo ataque causará +50% de dano.`;
+      this.log('Você analisa os padrões de Ruel. Próximo ataque +50%.','blp');
       G.flashGood();
+      this._shake=4;
     } else if(a.key==='d'){
-      let d=25+Math.floor(Math.random()*21);
-      if(s.analyzed){d=Math.floor(d*1.5);s.analyzed=false;msg=`⚡ DESCONECTAR (análise) — ${d} de dano a Ruel!`;}
-      else msg=`⚡ DESCONECTAR — ${d} de dano a Ruel.`;
-      s.rhp-=d;G.flashGood();this.shakeSprite('bEnemySprite');
+      let d=25+Math.floor(Math.random()*21);if(s.analyzed){d=Math.floor(d*1.5);s.analyzed=false;}
+      s.rhp-=d;this.log(`DESCONECTAR: ${d} de dano a Ruel.`,'blp');
+      G.flashGood();this._shake=6;this.spawnDmg(d,false);
     } else if(a.key==='f'){
-      let d=35+Math.floor(Math.random()*26);
-      if(s.analyzed){d=Math.floor(d*1.5);s.analyzed=false;}
+      let d=35+Math.floor(Math.random()*26);if(s.analyzed){d=Math.floor(d*1.5);s.analyzed=false;}
       s.rhp-=d;s.php-=15;
-      msg=`💥 FRAGMENTAR — ${d} dano a Ruel / -15 HP para você.`;
-      G.flashBad();this.shakeSprite('bEnemySprite');this.shakeSprite('bPlayerSprite');
+      this.log(`FRAGMENTAR: ${d} dano a Ruel / -15 você.`,'blp');
+      G.flashBad();this._shake=10;this.spawnDmg(d,false);this.spawnDmg(15,true);
     } else if(a.key==='h'){
       s.php=Math.min(100,s.php+20);s.shielded=true;
-      msg=`🛡 SINCRONIZAR — +20 HP. Escudo ativo contra próximo ataque.`;
-      G.flashGood();
+      this.log('SINCRONIZAR: +20 HP. Escudo ativo.','blp');
+      G.flashGood();this.spawnHeal(20);
     }
-    this.log(msg,'blp');
     this.upd();
     if(s.rhp<=0){this.end(true);return;}
     setTimeout(()=>this.ruelTurn(),1100);
   },
-  shakeSprite(id){
-    const el=$(id);if(!el)return;
-    let i=0;const iv=setInterval(()=>{
-      el.style.transform=i%2?'translateX(-4px)':'translateX(4px)';
-      if(++i>5){clearInterval(iv);el.style.transform='';}
-    },60);
-  },
   ruelTurn(){
     const s=this.state;
-    s.round++;
     const atk=this.RUEL[Math.floor(Math.random()*this.RUEL.length)];
     let d=atk.d[0]+Math.floor(Math.random()*(atk.d[1]-atk.d[0]+1));
-    if(s.shielded){d=Math.floor(d*.4);s.shielded=false;
-      this.log(`${atk.icon} RUEL usa ${atk.name} — BLOQUEADO! (${d} dano reduzido)`,'ble');
-    } else {
-      this.log(`${atk.icon} RUEL usa ${atk.name} — ${atk.msg} (${d} de dano)`,'ble');
-    }
+    if(s.shielded){d=Math.floor(d*.45);s.shielded=false;this.log('Escudo absorveu parte do dano!','blp');}
     s.php-=d;
-    G.glitch(500);G.flashBad();this.shakeSprite('bPlayerSprite');
+    this.log(`${atk.name}: ${atk.msg} (${d} de dano)`,'ble');
+    G.glitch(500);G.flashBad();this._shake=12;this.spawnDmg(d,true);
     this.upd();
     if(s.php<=0){this.end(false);return;}
     s.turn='player';this.renderActs();
   },
   end(win){
-    const s=this.state;s.done=true;
-    cancelAnimationFrame(this._af);
-    this.renderActs();
-    const rl=$('bRL'),rm=$('bRM');
-    rl.className='mg-rl '+(win?'win':'lose');
-    rl.textContent=win?'RUEL CEDEU':'CONSCIÊNCIA ABSORVIDA';
-    rm.textContent=win?'Você superou cinquenta anos de resistência digital.':'A consciência de Ruel foi mais forte que a sua.';
-    $('bRes').classList.add('on');
-    G.S.flags.bossWin=win;
-    if(win) G.flashGood(); else G.flashBad();
+    this.state.done=true;this.renderActs();
+    $('bRL').className='mg-rl '+(win?'win':'lose');
+    $('bRL').textContent=win?'RUEL CEDEU':'ABSORVIDA';
+    $('bRM').textContent=win?'Você superou cinquenta anos de resistência digital.':'A consciência de Ruel foi mais forte.';
+    $('bRes').classList.add('on');G.S.flags.bossWin=win;
   },
-  finish(){
-    cancelAnimationFrame(this._af);
-    $('mgOv').classList.remove('on');
-    G.goScene(G.S.flags.bossWin?'boss_win':'boss_lose');
-  },
-  animFX(){
+  finish(){cancelAnimationFrame(this._af);G._ignoreNextClick=true;$('mgOv').classList.remove('on');G.goScene(G.S.flags.bossWin?'boss_win':'boss_lose');},
+  anim(){
     const cv=$('bossCV');if(!cv)return;
-    const ctx=cv.getContext('2d');
-    const W=cv.width,H=cv.height;
+    const ctx=cv.getContext('2d');const W=cv.width,H=cv.height;
     const draw=()=>{
       this._af=requestAnimationFrame(draw);
-      ctx.clearRect(0,0,W,H);
       const t=Date.now()/1000,s=this.state;
-      if(s.done) return;
-      // scanlines subtle
-      for(let y=0;y<H;y+=4){ctx.fillStyle='rgba(0,0,0,.08)';ctx.fillRect(0,y,W,2);}
-      // ruel aura (right side)
-      const rp=Math.max(0,s.rhp/150);
-      for(let i=0;i<6;i++){
-        const px=W-100+Math.sin(t*2+i*1.1)*18*rp;
-        const py=15+i*22;
-        ctx.fillStyle=`rgba(150,0,120,${rp*.15})`;
-        ctx.fillRect(px,py,6,4);
+      // Screen shake
+      ctx.save();
+      if(this._shake>0){
+        const sx=(Math.random()-.5)*this._shake*1.2;
+        const sy=(Math.random()-.5)*this._shake*.7;
+        ctx.translate(sx,sy);
+        this._shake--;
       }
-      // player aura (left side)
-      const pp=Math.max(0,s.php/100);
-      ctx.strokeStyle=`rgba(40,160,70,${pp*.5})`;
-      ctx.lineWidth=1;ctx.beginPath();
-      for(let x=0;x<120;x++) ctx.lineTo(x,H-35+Math.sin(x*.12+t*2.5)*(8*pp));
+      // Background
+      if(this._bgImg&&this._bgImg.complete&&this._bgImg.naturalWidth>0){
+        ctx.drawImage(this._bgImg,0,0,W,H);
+        // Overlay escuro para legibilidade
+        ctx.fillStyle='rgba(0,0,0,.38)';ctx.fillRect(0,0,W,H);
+      } else {
+        // Fallback canvas atmosférico
+        ctx.fillStyle='#020308';ctx.fillRect(0,0,W,H);
+        // tubos de fundo
+        for(let i=0;i<8;i++){
+          ctx.strokeStyle=`rgba(30,60,40,${.15+i*.04})`;ctx.lineWidth=8+i*4;
+          ctx.beginPath();ctx.moveTo(i*W/8,0);ctx.quadraticCurveTo(i*W/8+40,H/2,i*W/8+20,H);ctx.stroke();
+        }
+        // glow central
+        const grad=ctx.createRadialGradient(W/2,H*.4,0,W/2,H*.4,W*.35);
+        grad.addColorStop(0,'rgba(80,0,80,.3)');grad.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+        // silhueta Ruel
+        ctx.fillStyle='rgba(120,0,120,.18)';
+        ctx.fillRect(W*.42,H*.08,W*.16,H*.72);
+        ctx.beginPath();ctx.arc(W*.5,H*.06,W*.065,0,Math.PI*2);ctx.fill();
+      }
+      // Scanlines CRT
+      for(let y=0;y<H;y+=3){ctx.fillStyle='rgba(0,0,0,.12)';ctx.fillRect(0,y,W,1);}
+      // Aura Ruel pulsante (lado direito)
+      const rp=s.rhp/150,rPulse=Math.sin(t*3)*.5+.5;
+      ctx.fillStyle=`rgba(180,20,20,${rPulse*.12*rp})`;
+      ctx.beginPath();ctx.arc(W*.72,H*.38,W*.18,0,Math.PI*2);ctx.fill();
+      // Aura player (lado esquerdo) pulsante
+      const pp=s.php/100,pPulse=Math.sin(t*2+1)*.5+.5;
+      ctx.strokeStyle=`rgba(60,180,80,${pPulse*.55*pp})`;ctx.lineWidth=2;ctx.beginPath();
+      for(let x=0;x<W*.38;x++)ctx.lineTo(x,H*.72+Math.sin(x*.06+t*2.5)*(12*pp));
       ctx.stroke();
-      // shielded glow
-      if(s.shielded){
-        ctx.strokeStyle='rgba(40,160,70,.6)';ctx.lineWidth=2;
-        ctx.strokeRect(30,H-65,80,55);
-      }
-      // ruel attack warning flash
+      // Overlay turno de Ruel
       if(s.turn==='ruel'&&!s.done){
-        ctx.fillStyle=`rgba(180,0,0,${.04+.04*Math.sin(t*8)})`;
-        ctx.fillRect(0,0,W,H);
+        ctx.fillStyle='rgba(180,20,20,.07)';ctx.fillRect(0,0,W,H);
+        ctx.fillStyle=`rgba(180,20,20,${Math.sin(t*6)*.15+.1})`;ctx.fillRect(0,0,W,H);
       }
+      // Escudo visual
+      if(s.shielded){
+        ctx.strokeStyle=`rgba(60,180,180,${Math.sin(t*5)*.4+.5})`;ctx.lineWidth=3;
+        ctx.beginPath();ctx.arc(W*.18,H*.5,44,0,Math.PI*2);ctx.stroke();
+      }
+      // Analisado visual
+      if(s.analyzed){
+        ctx.strokeStyle=`rgba(200,140,40,${Math.sin(t*8)*.4+.5})`;ctx.lineWidth=2;
+        ctx.strokeRect(W*.58,H*.1,W*.28,H*.55);
+        ctx.fillStyle=`rgba(200,140,40,.12)`;ctx.fillRect(W*.58,H*.1,W*.28,H*.55);
+      }
+      // Números de dano flutuantes
+      this._dmgNums=this._dmgNums.filter(n=>{
+        ctx.globalAlpha=n.alpha;
+        ctx.font=`bold ${n.size}px 'Courier New', monospace`;
+        ctx.fillStyle=n.col;
+        ctx.textAlign='center';
+        ctx.shadowColor=n.col;ctx.shadowBlur=8;
+        ctx.fillText(n.val,n.x,n.y);
+        ctx.shadowBlur=0;ctx.globalAlpha=1;
+        n.y+=n.vy;n.alpha-=.025;
+        return n.alpha>0;
+      });
+      ctx.restore();
     };draw();
   },
 };
@@ -2263,7 +2698,8 @@ MINIGAMES.sus_check = {
         <div class="mg-rm" id="susRM"></div>
         <button class="pb sm" onclick="MINIGAMES.sus_check.finish()">[ CONTINUAR ]</button>
       </div>`;
-    PORT.santos($('susPort'));
+    // desenhar o retrato no canvas passando o contexto 2D
+    const susCv = $('susPort'); if (susCv && susCv.getContext) PORT.santos(susCv.getContext('2d'), susCv.width, susCv.height);
     this.showQ();
   },
   showQ(){
@@ -2332,7 +2768,7 @@ MINIGAMES.sus_check = {
 })();
 
 // ════════════════════════════════════════════════════════════════
-// SECTION 12: INIT
+// SECTION 12: INIT.
 // ════════════════════════════════════════════════════════════════
 $('tName').addEventListener('keydown', e => { if(e.key==='Enter') G.startGame(); });
 
@@ -2362,149 +2798,6 @@ setInterval(() => {
 
 console.log('%cNEXUS ENTERPRISE v6.0','color:#2a6a38;font-family:monospace;font-size:12px');
 console.log('%cCÓD ELEVADOR: 170492 | PC LOGIN: RUEL / R-17-U-04-E-92-L','color:#cc0000;font-family:monospace;font-size:10px');
-
-// ════════════════════════════════════════════════════════════════
-// INTEGRAÇÃO BACKEND PHP — NEXUS API
-// Todas as chamadas são silenciosas: se o servidor estiver offline
-// o jogo continua funcionando normalmente via localStorage.
-// ════════════════════════════════════════════════════════════════
-const API = (() => {
-  const BASE = 'http://localhost:8000'; // troque pelo seu servidor em produção
-  let PLAYER_ID = null;
-  let _online = true; // assume online, descobre se falhar
-
-  // ── request genérico ──────────────────────────────────────────
-  const req = async (method, path, body = null, isForm = false) => {
-    if (!_online) return null;
-    try {
-      const opts = { method, headers: { 'Access-Control-Allow-Origin': '*' } };
-      if (body) {
-        if (isForm) {
-          opts.body = body; // FormData
-        } else {
-          opts.headers['Content-Type'] = 'application/json';
-          opts.body = JSON.stringify(body);
-        }
-      }
-      const res = await fetch(BASE + path, opts);
-      return await res.json();
-    } catch (e) {
-      _online = false;
-      console.info('[NEXUS API] Backend offline — usando localStorage.');
-      return null;
-    }
-  };
-
-  // ── iniciar / retomar sessão ──────────────────────────────────
-  const iniciar = async (nome, genero) => {
-    const form = new FormData();
-    form.append('nome', nome);
-    form.append('genero', genero);
-    const data = await req('POST', '/jogador/iniciar', form, true);
-    if (!data?.success) return;
-
-    PLAYER_ID = data.jogador.id;
-
-    // Se o jogador já tinha progresso salvo no banco, restaura
-    const j = data.jogador;
-    if (j.cena_atual && j.cena_atual !== 'room_start') {
-      G.S.sync      = j.sync      ?? G.S.sync;
-      G.S.sus       = j.suspeita  ?? G.S.sus;
-      G.S.frags     = j.frags     ?? G.S.frags;
-      G.S.inv       = j.inventario ?? G.S.inv;
-      G.S.lore      = j.lore      ?? G.S.lore;
-      G.S.flags     = j.flags     ?? G.S.flags;
-      G.S.path      = j.path_escolhido ?? G.S.path;
-      G.S.scene     = j.cena_atual;
-      G.updateHUD();
-      console.info('[NEXUS API] Progresso restaurado do banco para jogador ID', PLAYER_ID);
-    }
-
-    // Mural: mescla banco com localStorage
-    if (j.finais_desbloqueados?.length || j.mortes_desbloqueadas?.length) {
-      const m = G.getMural();
-      j.finais_desbloqueados.forEach(k => { if (!m.endings.includes(k)) m.endings.push(k); });
-      j.mortes_desbloqueadas.forEach(k => { if (!m.deaths.includes(k)) m.deaths.push(k); });
-      try {
-        localStorage.setItem(MURAL_KEY, JSON.stringify(m));
-        sessionStorage.setItem(MURAL_KEY, JSON.stringify(m));
-      } catch(e) {}
-    }
-  };
-
-  // ── autosave ──────────────────────────────────────────────────
-  const salvar = async () => {
-    if (!PLAYER_ID) return;
-    await req('POST', '/jogador/progresso', {
-      id:         PLAYER_ID,
-      cena:       G.S.scene   ?? 'room_start',
-      sync:       G.S.sync    ?? 75,
-      suspeita:   G.S.sus     ?? 0,
-      frags:      G.S.frags   ?? 0,
-      path:       G.S.path    ?? '',
-      flags:      G.S.flags   ?? {},
-      inventario: G.S.inv     ?? [],
-      lore:       G.S.lore    ?? [],
-    });
-  };
-
-  // ── desbloquear final/morte ───────────────────────────────────
-  const mural = async (chave, tipo) => {
-    if (!PLAYER_ID) return;
-    await req('POST', '/jogador/final', { id: PLAYER_ID, chave, tipo });
-  };
-
-  // ── deletar (reset) ───────────────────────────────────────────
-  const deletar = async () => {
-    if (!PLAYER_ID) return;
-    await req('DELETE', `/jogador?id=${PLAYER_ID}`);
-    PLAYER_ID = null;
-  };
-
-  return { iniciar, salvar, mural, deletar, getId: () => PLAYER_ID };
-})();
-
-// ── Hooking nas funções existentes do jogo ────────────────────
-// startGame: após iniciar estado local, também registra no banco
-const _origStartGame = G.startGame.bind(G);
-G.startGame = () => {
-  _origStartGame();
-  // API.iniciar roda em paralelo — não bloqueia o jogo
-  API.iniciar(G.S.name, G.S.gen);
-};
-
-// tryResume: após carregar do localStorage, também busca banco
-const _origTryResume = G.tryResume.bind(G);
-G.tryResume = () => {
-  _origTryResume();
-  // Se tinha ID salvo em localStorage, sincroniza com banco
-  const saved = (() => {
-    try { return JSON.parse(localStorage.getItem(SAVE_KEY) || '{}'); } catch(e) { return {}; }
-  })();
-  if (saved?.name && saved?.gen) {
-    API.iniciar(saved.name, saved.gen);
-  }
-};
-
-// saveState: além do localStorage, envia para o banco
-const _origSaveState = G.saveState.bind(G);
-G.saveState = () => {
-  _origSaveState(); // localStorage primeiro — sempre funciona
-  API.salvar();     // banco em paralelo — silencioso se offline
-};
-
-// saveMural: além do localStorage, persiste no banco
-const _origSaveMural = G.saveMural.bind(G);
-G.saveMural = (key, type = 'ending') => {
-  _origSaveMural(key, type); // localStorage primeiro
-  API.mural(key, type);      // banco em paralelo
-};
-
-// restart: limpa banco também
-const _origRestart = G.restart.bind(G);
-G.restart = () => {
-  API.deletar().finally(() => _origRestart());
-};
 </script>
-</body>
+  </body>
 </html>
