@@ -41,7 +41,7 @@ class JogadorController
                 'erro'    => $e->getMessage(),
                 'campo'   => $e->getCampo(),
             ], 422);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log('[NEXUS CONTROLLER] ' . $e->getMessage());
             $this->json(['success' => false, 'erro' => 'Erro interno.'], 500);
         }
@@ -70,7 +70,7 @@ class JogadorController
             $this->json(['success' => $ok]);
         } catch (BusinessRuleException $e) {
             $this->json(['success' => false, 'erro' => $e->getMessage()], 422);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log('[NEXUS CONTROLLER] ' . $e->getMessage());
             $this->json(['success' => false, 'erro' => 'Erro interno.'], 500);
         }
@@ -93,7 +93,7 @@ class JogadorController
             $this->json(['success' => $ok]);
         } catch (BusinessRuleException $e) {
             $this->json(['success' => false, 'erro' => $e->getMessage()], 422);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log('[NEXUS CONTROLLER] ' . $e->getMessage());
             $this->json(['success' => false, 'erro' => 'Erro interno.'], 500);
         }
@@ -110,7 +110,7 @@ class JogadorController
             $this->json(['success' => true, 'mural' => $mural]);
         } catch (BusinessRuleException $e) {
             $this->json(['success' => false, 'erro' => $e->getMessage()], 404);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log('[NEXUS CONTROLLER] ' . $e->getMessage());
             $this->json(['success' => false, 'erro' => 'Erro interno.'], 500);
         }
@@ -127,7 +127,7 @@ class JogadorController
             $this->json(['success' => true, 'jogador' => $this->serialize($jogador)]);
         } catch (BusinessRuleException $e) {
             $this->json(['success' => false, 'erro' => $e->getMessage()], 404);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log('[NEXUS CONTROLLER] ' . $e->getMessage());
             $this->json(['success' => false, 'erro' => 'Erro interno.'], 500);
         }
@@ -144,7 +144,7 @@ class JogadorController
             $this->json(['success' => $ok]);
         } catch (BusinessRuleException $e) {
             $this->json(['success' => false, 'erro' => $e->getMessage()], 404);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log('[NEXUS CONTROLLER] ' . $e->getMessage());
             $this->json(['success' => false, 'erro' => 'Erro interno.'], 500);
         }

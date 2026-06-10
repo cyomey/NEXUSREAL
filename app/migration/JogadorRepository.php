@@ -139,7 +139,7 @@ class JogadorRepository implements IJogadorRepository
             WHERE id = :id
         ';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             ':sync'           => $jogador->sync,
             ':suspeita'       => $jogador->suspeita,
             ':frags'          => $jogador->frags,
@@ -150,7 +150,6 @@ class JogadorRepository implements IJogadorRepository
             ':lore'           => $jogador->loreJson(),
             ':id'             => $jogador->id,
         ]);
-        return $stmt->rowCount() > 0;
     }
 
     // ─────────────────────────────────────────────
@@ -177,8 +176,7 @@ class JogadorRepository implements IJogadorRepository
         $stmt = $this->pdo->prepare(
             "UPDATE jogadores SET {$col} = :val, atualizado_em = NOW() WHERE id = :id"
         );
-        $stmt->execute([':val' => $val, ':id' => $id]);
-        return $stmt->rowCount() > 0;
+        return $stmt->execute([':val' => $val, ':id' => $id]);
     }
 
     // ─────────────────────────────────────────────

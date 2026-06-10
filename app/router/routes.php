@@ -3,24 +3,11 @@
 declare(strict_types=1);
 
 /**
- * PASSO 5 — index.php como Container de Injeção de Dependência
- * É aqui que PDO → Repository → Service → Controller são montados.
- * Nenhuma outra camada instancia suas próprias dependências.
+ * Roteador da API.
+ * Monta PDO → Repository → Service → Controller e despacha as rotas JSON.
  */
 
-// ── Autoloader simples (sem Composer) ──────────────────────────
-spl_autoload_register(function (string $class): void {
-    // Nexus\Database\Database → src/Database/Database.php
-    $base = __DIR__ . '/src/';
-    $rel  = str_replace(['Nexus\\', '\\'], ['', '/'], $class) . '.php';
-    $file = $base . $rel;
-    if (file_exists($file)) {
-        require_once $file;
-    }
-});
-
-// Middleware também
-require_once __DIR__ . '/middleware/Middleware.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 use Nexus\Database\Database;
 use Nexus\Repository\JogadorRepository;
@@ -40,14 +27,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // ── Montagem das dependências (DI Container manual) ─────────────
-$pdo        = Database::getInstance();                  // Passo 1
-$repository = new JogadorRepository($pdo);             // Passo 2
-$service    = new JogadorService($repository);         // Passo 3
-$controller = new JogadorController($service);         // Passo 4
+try {
+    $pdo        = Database::getInstance();              // Passo 1
+    $repository = new JogadorRepository($pdo);          // Passo 2
+    $service    = new JogadorService($repository);      // Passo 3
+    $controller = new JogadorController($service);      // Passo 4
+} catch (\Throwable $e) {
+    error_log('[NEXUS BOOT API] ' . $e->getMessage());
+    http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode([
+        'success' => false,
+        'erro' => 'Falha ao iniciar as camadas da API.',
+    ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    exit;
+}
 
 // ── Roteamento simples ──────────────────────────────────────────
-$uri    = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-$uri    = rtrim($uri, '/');
+$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+$basePath = nexus_base_path();
+if ($basePath !== '' && $basePath !== '/' && str_starts_with($uri, $basePath)) {
+    $uri = substr($uri, strlen($basePath)) ?: '/';
+}
+$uri = rtrim($uri, '/');
 $method = $_SERVER['REQUEST_METHOD'];
 
 match (true) {

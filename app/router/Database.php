@@ -69,7 +69,9 @@ final class Database
     private static function getConfig(): array
     {
         if (self::$config === null) {
-            $path = __DIR__ . '/../../config/config.ini';
+            $path = function_exists('nexus_path')
+                ? nexus_path('config', 'config.ini')
+                : __DIR__ . '/../config/config.ini';
 
             if (!file_exists($path)) {
                 throw new RuntimeException('Arquivo config.ini não encontrado.');
