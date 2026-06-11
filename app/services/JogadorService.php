@@ -108,7 +108,7 @@ class JogadorService
 
         $finaisValidos = [
             'demissao', 'eliminacao', 'sacrificio', 'verdadeiro', 'corpo',
-            'morte_elevador', 'morte_suspeita', 'morte_boss',
+            'morte_elevador', 'morte_suspeita', 'morte_boss', 'morte_corpo_final',
         ];
 
         if (!in_array($chave, $finaisValidos, true)) {

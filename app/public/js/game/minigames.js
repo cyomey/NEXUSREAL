@@ -286,7 +286,7 @@ MINIGAMES.elev_code = {
     if(s.input.length<6){$('edS').innerHTML='<span style="color:#cc2a2a">Código incompleto.</span>';return;}
     s.attempts++;const rem=s.MAX-s.attempts;
     if(s.input===this.CODE){
-      G.setFlag('elevUnlocked');G.save?.();G.flashGood();
+      G.setFlag('elevUnlocked');G.saveState?.();G.flashGood();
       $('edD').style.borderColor='#3a8a48';$('edD').style.color='#62a870';
       $('edR').classList.add('on');$('edRL').className='mg-rl win';$('edRL').textContent='ACESSO CONCEDIDO';
       $('edRM').innerHTML='<div>O elevador destrava. Escolha o andar:</div>';
@@ -307,8 +307,7 @@ MINIGAMES.elev_code = {
         $('edR').classList.add('on');$('edRL').className='mg-rl lose';$('edRL').textContent='FALHA CRÍTICA';
         $('edRM').textContent='O elevador falha. O chão some.';
         $('edCont').onclick=()=>{
-          G.saveMural('morte_elevador','death');
-          G.doDeath('QUEDA','O sistema bloqueou após cinco tentativas.\n\nO elevador não tinha failsafes — décadas de desgaste.\n\nA queda durou seis segundos.\n\nRelatório da empresa: "falha técnica durante manutenção não autorizada".','CAUSA: Código incorreto — 5 falhas consecutivas.');
+          G.doDeath('QUEDA','O sistema bloqueou após cinco tentativas.\n\nO elevador não tinha failsafes — décadas de desgaste.\n\nA queda durou seis segundos.\n\nRelatório da empresa: "falha técnica durante manutenção não autorizada".','CAUSA: Código incorreto — 5 falhas consecutivas.','morte_elevador');
         };
       } else {
         s.input='';this.upd();
@@ -828,8 +827,7 @@ MINIGAMES.sus_check = {
   finish(){
     $('mgOv').classList.remove('on');
     if(G.S.flags.susFail){
-      G.saveMural('morte_suspeita','death');
-      G.doDeath('ELIMINADA','O Diretor Santos não ficou convencido.\n\nA Nexus existe há 50 anos. Sabe como lidar com pessoas que sabem demais.\n\nVocê foi escoltada para uma sala sem janelas.\n\nRelatório oficial: "Funcionária desaparecida durante investigação técnica."','CAUSA: Suspeita confirmada. Protocolo de contenção ativado.');
+      G.doDeath('ELIMINADA','O Diretor Santos não ficou convencido.\n\nA Nexus existe há 50 anos. Sabe como lidar com pessoas que sabem demais.\n\nVocê foi escoltada para uma sala sem janelas.\n\nRelatório oficial: "Funcionária desaparecida durante investigação técnica."','CAUSA: Suspeita confirmada. Protocolo de contenção ativado.','morte_suspeita');
     } else G.goScene('sus_pass');
   },
 };

@@ -66,7 +66,7 @@ G.goScene = (sceneId) => {
   if (sc.mg) { G.openMG(sc.mg); return; }
 
   // Death shortcut
-  if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause); return; }
+  if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause, sc.death.key); return; }
 
   // Final shortcut
   if (sc.final) { G.doFinal(sc.final); return; }

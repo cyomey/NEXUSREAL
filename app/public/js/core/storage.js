@@ -63,6 +63,19 @@ G.getMural = () => {
   } catch(e) { return {endings:[], deaths:[]}; }
 };
 
+G.mergeMural = (remote = {}) => {
+  const local = G.getMural();
+  const merged = {
+    endings: Array.from(new Set([...(local.endings || []), ...(remote.endings || [])])),
+    deaths: Array.from(new Set([...(local.deaths || []), ...(remote.deaths || [])])),
+  };
+  try {
+    localStorage.setItem(MURAL_KEY, JSON.stringify(merged));
+    sessionStorage.setItem(MURAL_KEY, JSON.stringify(merged));
+  } catch(e) {}
+  return merged;
+};
+
 // ── State ──
 G.initState = (name, gen) => {
   G.S = {

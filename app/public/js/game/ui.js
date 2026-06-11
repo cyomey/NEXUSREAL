@@ -154,7 +154,7 @@ G.resumeFromSlot = (slot) => {
     const sc = SCENES[G.S.scene];
     if (sc) {
       if (sc.mg) { G.openMG(sc.mg); }
-      else if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause); }
+      else if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause, sc.death.key); }
       else if (sc.final) { G.doFinal(sc.final); }
       else {
         G.showScr('sGame');
@@ -246,7 +246,7 @@ G.loadAndResume = (slot) => {
     const sc = SCENES[G.S.scene];
     if (sc) {
       if (sc.mg) { G.openMG(sc.mg); }
-      else if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause); }
+      else if (sc.death) { G.doDeath(sc.death.title, sc.death.body, sc.death.cause, sc.death.key); }
       else if (sc.final) { G.doFinal(sc.final); }
       else {
         ART.draw(sc.art || 'corridor');

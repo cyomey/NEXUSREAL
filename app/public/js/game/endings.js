@@ -26,8 +26,8 @@ G.doFinal = key => {
   G.saveState();
 };
 
-G.doDeath = (title, body, cause) => {
-  G.saveMural(title.toLowerCase().replace(/\s+/g,'_'), 'death');
+G.doDeath = (title, body, cause, key = '') => {
+  if (key) G.saveMural(key, 'death');
   G.showScr('sDeath');
   $('dT').textContent = title || 'VOCÊ MORREU';
   $('dB').textContent = body || '';
@@ -48,10 +48,7 @@ const ENDINGS_MURAL = [
 ];
 
 G._muralPrev = null;
-G.openMural = fromTitle => {
-  G._muralPrev = fromTitle ? null : G.S.scene;
-  G.showScr('sMural');
-  const m = G.getMural();
+G.renderMural = m => {
   const all = new Set([...(m.endings||[]), ...(m.deaths||[])]);
   const grid = $('muralGrid'); grid.innerHTML = '';
   ENDINGS_MURAL.forEach(f => {
@@ -65,6 +62,15 @@ G.openMural = fromTitle => {
       <div class="mc-lk">${open?'✓':'🔒'}</div>`;
     grid.appendChild(c);
   });
+};
+
+G.openMural = async fromTitle => {
+  G._muralPrev = fromTitle ? null : (G.S?.scene || null);
+  G.showScr('sMural');
+  G.renderMural(G.getMural());
+
+  const remote = await G.fetchMural?.();
+  if (remote) G.renderMural(G.mergeMural(remote));
 };
 
 G.closeMural = () => {

@@ -478,7 +478,7 @@ SCENES.boss_win = {
 
 SCENES.boss_lose = {
   art:'ruel_room', label:'ABSORVIDA',
-  effect:()=>{ G.flashBad(); G.saveMural('morte_boss','death'); },
+  effect:()=>G.flashBad(),
   lines:[
     {char:'ruel', name:'RUEL', text:'Cinquenta anos me preparando. Você teve uma tarde.'},
     {char:'ruel', name:'RUEL', text:'D̸e̷s̷c̸a̸n̴s̸e̸.̷'},

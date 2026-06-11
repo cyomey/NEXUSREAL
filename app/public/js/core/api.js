@@ -70,3 +70,15 @@ G.syncMural = async (key, type = 'ending') => {
     console.warn('API mural indisponível:', e.message);
   }
 };
+
+G.fetchMural = async () => {
+  if (!G.S?.playerId) return null;
+
+  try {
+    const data = await G.api(`/jogador/mural?id=${encodeURIComponent(G.S.playerId)}`);
+    return data.mural || null;
+  } catch (e) {
+    console.warn('API mural indisponivel:', e.message);
+    return null;
+  }
+};
